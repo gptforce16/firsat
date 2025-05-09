@@ -1,12 +1,96 @@
-Yakın Fırsatlar body { margin: 0; font-family: 'Inter', sans-serif; background: #f5f7fa; color: #333; } header { background: #6c5ce7; color: white; padding: 1rem 2rem; text-align: center; font-size: 1.5rem; font-weight: 600; } .container { max-width: 600px; margin: 2rem auto; padding: 1rem; } .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 6px 16px rgba(0,0,0,0.06); transition: 0.3s ease; } .card:hover { transform: scale(1.02); } .title { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; } .desc { font-size: 1rem; margin-bottom: 0.5rem; } .time { font-size: 0.85rem; color: #888; } .tag { display: inline-block; background: #ffeaa7; color: #2d3436; font-size: 0.8rem; padding: 4px 8px; border-radius: 8px; margin-top: 0.5rem; } Yakın Fırsatlar 
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yakın Fırsatlar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
 
-Kuaför Ayşe
+    header {
+      background: #6c5ce7;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
 
-Saat 14:00-15:00 arası kaş alım %50 indirimli!
+    .container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
 
-Kadıköy - Son 43 dakika kaldı
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      transition: 0.3s ease;
+    }
 
-Kuaför
+    .card:hover {
+      transform: scale(1.02);
+    }
 
-<div class="card"> <div class="title">Tatlıcı Cemil</div> <div class="desc">Cheesecake'lerde 2 al 1 öde! Sadece bugün 18:00’e kadar.</div> <div class="time">Moda - Son 2 saat kaldı</div> <div class="tag">Tatlı</div> </div> <div class="card"> <div class="title">Studio Flow Pilates</div> <div class="desc">Bugünkü 17:00 dersi için 1 kişilik yer açıldı!</div> <div class="time">Fenerbahçe - Son 1 saat 15 dk</div> <div class="tag">Spor</div> </div> 
+    .title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
 
+    .desc {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .time {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #ffeaa7;
+      color: #2d3436;
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>Yakın Fırsatlar</header>
+  <div class="container">
+    <div class="card">
+      <div class="title">Kuaför Ayşe</div>
+      <div class="desc">Saat 14:00-15:00 arası kaş alım %50 indirimli!</div>
+      <div class="time">Kadıköy - Son 43 dakika kaldı</div>
+      <div class="tag">Kuaför</div>
+    </div>
+
+    <div class="card">
+      <div class="title">Tatlıcı Cemil</div>
+      <div class="desc">Cheesecake'lerde 2 al 1 öde! Sadece bugün 18:00’e kadar.</div>
+      <div class="time">Moda - Son 2 saat kaldı</div>
+      <div class="tag">Tatlı</div>
+    </div>
+
+    <div class="card">
+      <div class="title">Studio Flow Pilates</div>
+      <div class="desc">Bugünkü 17:00 dersi için 1 kişilik yer açıldı!</div>
+      <div class="time">Fenerbahçe - Son 1 saat 15 dk</div>
+      <div class="tag">Spor</div>
+    </div>
+  </div>
+</body>
+</html>

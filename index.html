@@ -7,7 +7,83 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
   <style>
-    /* Kendi stilinizi burada koruyabilirsiniz */
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background: #6c5ce7;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    #map {
+      height: 300px;
+      width: 100%;
+    }
+    .filters {
+      text-align: center;
+      margin: 1rem auto;
+    }
+    .filters button {
+      background: #dfe6e9;
+      border: none;
+      padding: 8px 12px;
+      margin: 4px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .filters button.active {
+      background: #6c5ce7;
+      color: white;
+    }
+    .container {
+      max-width: 600px;
+      margin: 1rem auto;
+      padding: 1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      transition: 0.3s ease;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .desc, .time {
+      margin-bottom: 0.5rem;
+    }
+    .tag {
+      display: inline-block;
+      background: #ffeaa7;
+      color: #2d3436;
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+    .btn {
+      display: inline-block;
+      background: #6c5ce7;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -28,32 +104,20 @@
       <div class="time">Kadıköy - Son 43 dakika kaldı</div>
       <div class="tag">Kuaför</div><br>
       <a href="#" class="btn">Hemen Git</a>
-
-      <!-- Yorumlar ve Puanlar -->
-      <div class="reviews">
-        <h3>Yorumlar</h3>
-        <div class="review">
-          <div class="review-text">Hizmet harikaydı!</div>
-          <div class="review-rating">Puan: 5</div>
-        </div>
-        <div class="review">
-          <div class="review-text">Fiyat biraz yüksek ama indirim güzel.</div>
-          <div class="review-rating">Puan: 4</div>
-        </div>
-        <h4>Yorum Yap:</h4>
-        <form onsubmit="submitReview(event, 'Kuaför Ayşe')">
-          <textarea id="review-text" placeholder="Yorumunuzu yazın..." required></textarea><br>
-          <label for="review-rating">Puan: </label>
-          <select id="review-rating" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select><br>
-          <button type="submit">Yorum Gönder</button>
-        </form>
-      </div>
+    </div>
+    <div class="card" data-category="Tatlı" data-lat="40.982" data-lng="29.060">
+      <div class="title">Tatlıcı Cemil</div>
+      <div class="desc">Cheesecake'lerde 2 al 1 öde!</div>
+      <div class="time">Moda - Son 2 saat kaldı</div>
+      <div class="tag">Tatlı</div><br>
+      <a href="#" class="btn">Hemen Git</a>
+    </div>
+    <div class="card" data-category="Spor" data-lat="40.977" data-lng="29.073">
+      <div class="title">Studio Flow Pilates</div>
+      <div class="desc">Bugün 17:00 dersi için 1 kişilik yer açıldı!</div>
+      <div class="time">Fenerbahçe - Son 1 saat 15 dk</div>
+      <div class="tag">Spor</div><br>
+      <a href="#" class="btn">Hemen Git</a>
     </div>
   </div>
 
@@ -65,62 +129,75 @@
       attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
-    // Kullanıcı yorumları ve puanları
-    const reviews = {
-      "Kuaför Ayşe": [
-        { text: "Hizmet harikaydı!", rating: 5 },
-        { text: "Fiyat biraz yüksek ama indirim güzel.", rating: 4 }
-      ]
-    };
-
-    // Yorum ve puan ekleme işlevi
-    function submitReview(event, place) {
-      event.preventDefault();
-      const reviewText = document.getElementById("review-text").value;
-      const reviewRating = parseInt(document.getElementById("review-rating").value);
-
-      if (reviews[place]) {
-        reviews[place].push({ text: reviewText, rating: reviewRating });
-      } else {
-        reviews[place] = [{ text: reviewText, rating: reviewRating }];
+    const locations = [
+      {
+        name: "Kuaför Ayşe",
+        desc: "14:00-15:00 arası kaş alım %50 indirimli!",
+        coords: [40.989, 29.032]
+      },
+      {
+        name: "Tatlıcı Cemil",
+        desc: "Cheesecake'lerde 2 al 1 öde!",
+        coords: [40.982, 29.060]
+      },
+      {
+        name: "Studio Flow Pilates",
+        desc: "Bugün 17:00 dersi için 1 kişilik yer açıldı!",
+        coords: [40.977, 29.073]
       }
+    ];
 
-      renderReviews(place);
+    locations.forEach(loc => {
+      L.marker(loc.coords)
+        .addTo(map)
+        .bindPopup(`<b>${loc.name}</b><br>${loc.desc}`);
+    });
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+
+        locations.forEach(loc => {
+          const distance = getDistance(userLat, userLng, loc.coords[0], loc.coords[1]);
+          if (distance <= 3000) { // 3 km içinde
+            document.querySelector(`[data-lat="${loc.coords[0]}"][data-lng="${loc.coords[1]}"]`).style.display = 'block';
+          } else {
+            document.querySelector(`[data-lat="${loc.coords[0]}"][data-lng="${loc.coords[1]}"]`).style.display = 'none';
+          }
+        });
+
+        map.setView([userLat, userLng], 13);
+        L.marker([userLat, userLng]).addTo(map).bindPopup("Buradasınız");
+      });
     }
 
-    // Yorumları render etme
-    function renderReviews(place) {
-      const reviewContainer = document.querySelector(`[data-category="${place}"] .reviews`);
-      const reviewList = reviews[place].map(review => `
-        <div class="review">
-          <div class="review-text">${review.text}</div>
-          <div class="review-rating">Puan: ${review.rating}</div>
-        </div>
-      `).join('');
-      
-      reviewContainer.innerHTML = `
-        <h3>Yorumlar</h3>
-        ${reviewList}
-        <h4>Yorum Yap:</h4>
-        <form onsubmit="submitReview(event, '${place}')">
-          <textarea id="review-text" placeholder="Yorumunuzu yazın..." required></textarea><br>
-          <label for="review-rating">Puan: </label>
-          <select id="review-rating" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select><br>
-          <button type="submit">Yorum Gönder</button>
-        </form>
-      `;
+    function getDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
     }
 
-    // Başlangıçta yorumları render et
-    renderReviews("Kuaför Ayşe");
+    function filterCards(category) {
+      const cards = document.querySelectorAll('.card');
+      const buttons = document.querySelectorAll('.filters button');
 
-    // Diğer fonksiyonlar ve harita ayarları burada
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
   </script>
 </body>
 </html>

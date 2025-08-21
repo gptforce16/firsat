@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="tr">
+<!DOCTYPE html>
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,9 +46,13 @@
     }
   </style>
 </head>
-<body><!-- Profesyonel, altın sarısı ve gölgeli pointer --><svg id="pointer" width="50" height="50" viewBox="-25 -25 50 50">
+<body>
+
+<svg id="pointer" width="50" height="50" viewBox="-25 -25 50 50">
   <polygon points="0,-22 18,20 -18,20" fill="gold" stroke="#b8860b" stroke-width="3"/>
-</svg><svg id="wheel" viewBox="0 0 500 500"></svg>
+</svg>
+
+<svg id="wheel" viewBox="0 0 500 500"></svg>
 
 <button id="spinBtn">Çevir</button>
 
@@ -66,7 +71,6 @@ const PRIZES = [
 
 const sliceAngle = 360 / PRIZES.length;
 
-// Çarkı çiz
 PRIZES.forEach((prize, i) => {
   let startAngle = (i * sliceAngle) * Math.PI / 180;
   let endAngle = ((i + 1) * sliceAngle) * Math.PI / 180;
@@ -84,7 +88,6 @@ PRIZES.forEach((prize, i) => {
   path.setAttribute("stroke-width", "2");
   wheel.appendChild(path);
 
-  // Dilim etiketini ekle
   let textAngle = (i + 0.5) * sliceAngle * Math.PI / 180;
   let tx = 250 + 150 * Math.cos(textAngle);
   let ty = 250 + 150 * Math.sin(textAngle);
@@ -118,5 +121,7 @@ spinBtn.addEventListener("click", () => {
     alert("Kazandın: " + PRIZES[winningIndex].label);
   }, 5200);
 });
-</script></body>
+</script>
+
+</body>
 </html>

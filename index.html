@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>İşletme İçi Hediye Çarkı</title>
+<title>İşletme İçi Dinamik Hediye Çarkı</title>
 <style>
   body{margin:0;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#0b0f14;color:#fff;}
   .wheel-container{position:relative;width:90vw;max-width:500px;}
@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<h2>🎁 İşletme İçi Hediye Çarkı</h2>
+<h2>🎁 İşletme İçi Dinamik Hediye Çarkı</h2>
 <div class="wheel-container">
   <div class="pointer"></div>
   <svg id="wheel" viewBox="0 0 1000 1000"></svg>
@@ -32,47 +32,67 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 <script>
-/* Ödül listesi */
-const PRIZES=[
-  {label:"Ücretsiz Kahve",color:"#4ade80",weight:8},
-  {label:"%10 İndirim",color:"#60a5fa",weight:16},
-  {label:"Tatlı İkram",color:"#f59e0b",weight:10},
-  {label:"Teşekkürler 💚",color:"#94a3b8",weight:34},
-  {label:"%20 İndirim",color:"#22d3ee",weight:6},
-  {label:"Ücretsiz Latte",color:"#a78bfa",weight:8},
-  {label:"2. İçeceğe %50",color:"#fb7185",weight:10},
-  {label:"Şefin Sürprizi",color:"#34d399",weight:8}
+/* ---------------- Ödül Dizisi ---------------- */
+let PRIZES=[
+  {label:"Ücretsiz Kahve", color:"#4ade80", weight:8},
+  {label:"%10 İndirim", color:"#60a5fa", weight:16},
+  {label:"Tatlı İkram", color:"#f59e0b", weight:10},
+  {label:"Teşekkürler 💚", color:"#94a3b8", weight:34},
+  {label:"%20 İndirim", color:"#22d3ee", weight:6}
 ];
-const SETTINGS={dailyLimit:1,friction:0.992,minSpins:4,maxSpins:7};
 
-/* SVG Çark Oluşturma */
+/* ---------------- Ayarlar ---------------- */
+const SETTINGS={dailyLimit:1,minSpins:4,maxSpins:7};
+
+/* ---------------- SVG Çark Oluşturma ---------------- */
 const svg=document.getElementById('wheel');
-const N=PRIZES.length;
-const cx=500,cy=500,rOuter=480,rInner=120;
-function pc(cx,cy,r,a){return {x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)};}
-for(let i=0;i<N;i++){
-  const a0=-Math.PI/2+i*2*Math.PI/N,a1=a0+2*Math.PI/N;
-  const p0=pc(cx,cy,rInner,a0),p1=pc(cx,cy,rOuter,a0),p2=pc(cx,cy,rOuter,a1),p3=pc(cx,cy,rInner,a1);
-  const path=`M${p0.x},${p0.y} L${p1.x},${p1.y} A${rOuter},${rOuter} 0 0 1 ${p2.x},${p2.y} L${p3.x},${p3.y} A${rInner},${rInner} 0 0 0 ${p0.x},${p0.y} Z`;
-  const slice=document.createElementNS('http://www.w3.org/2000/svg','path'); slice.setAttribute('d',path); slice.setAttribute('fill',PRIZES[i].color); slice.setAttribute('stroke','#000'); slice.setAttribute('stroke-width','2'); svg.appendChild(slice);
+function drawWheel(){
+  svg.innerHTML=''; // önce temizle
+  const N=PRIZES.length;
+  const cx=500,cy=500,rOuter=480,rInner=120;
+  function pc(cx,cy,r,a){return {x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)};}
+  for(let i=0;i<N;i++){
+    const a0=-Math.PI/2+i*2*Math.PI/N,a1=a0+2*Math.PI/N;
+    const p0=pc(cx,cy,rInner,a0),p1=pc(cx,cy,rOuter,a0),p2=pc(cx,cy,rOuter,a1),p3=pc(cx,cy,rInner,a1);
+    const path=`M${p0.x},${p0.y} L${p1.x},${p1.y} A${rOuter},${rOuter} 0 0 1 ${p2.x},${p2.y} L${p3.x},${p3.y} A${rInner},${rInner} 0 0 0 ${p0.x},${p0.y} Z`;
+    const slice=document.createElementNS('http://www.w3.org/2000/svg','path');
+    slice.setAttribute('d',path);
+    slice.setAttribute('fill',PRIZES[i].color);
+    slice.setAttribute('stroke','#000');
+    slice.setAttribute('stroke-width','2');
+    svg.appendChild(slice);
+  }
+}
+drawWheel();
+
+/* ---------------- Legend ---------------- */
+const legend=document.getElementById('legend');
+function drawLegend(){
+  legend.innerHTML='';
+  PRIZES.forEach(p=>{
+    const div=document.createElement('div');
+    div.innerHTML=`<span style="display:inline-block;width:14px;height:14px;background:${p.color};margin-right:6px;"></span>${p.label}`;
+    legend.appendChild(div);
+  });
+}
+drawLegend();
+
+/* ---------------- Weighted Pick ---------------- */
+function weightedPick(){
+  const totalWeight=PRIZES.reduce((a,b)=>a+b.weight,0);
+  let r=Math.random()*totalWeight;
+  for(let i=0;i<PRIZES.length;i++){
+    r-=PRIZES[i].weight;
+    if(r<=0) return i;
+  }
+  return PRIZES.length-1;
 }
 
-/* Legend */
-const legend=document.getElementById('legend');
-PRIZES.forEach(p=>{
-  const div=document.createElement('div'); div.innerHTML=`<span style="display:inline-block;width:14px;height:14px;background:${p.color};margin-right:6px;"></span>${p.label}`;
-  legend.appendChild(div);
-});
-
-/* Weighted Pick */
-const totalWeight=PRIZES.reduce((a,b)=>a+b.weight,0);
-function weightedPick(){let r=Math.random()*totalWeight; for(let i=0;i<N;i++){r-=PRIZES[i].weight; if(r<=0)return i;} return N-1;}
-
-/* Günlük Limit */
+/* ---------------- Günlük Limit ---------------- */
 function todayKey(){const d=new Date();return `spin:${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;}
 function consumeDailyToken(){try{const k=todayKey(),used=Number(localStorage.getItem(k)||'0'); if(used>=SETTINGS.dailyLimit)return false; localStorage.setItem(k,used+1); return true;}catch(e){return true;}}
 
-/* Spin Animasyonu */
+/* ---------------- Spin ---------------- */
 let spinning=false,angle=0;
 function spin(){
   if(spinning) return;
@@ -80,7 +100,7 @@ function spin(){
   spinning=true;
   const idx=weightedPick();
   const spins=Math.floor(Math.random()*(SETTINGS.maxSpins-SETTINGS.minSpins+1))+SETTINGS.minSpins;
-  const targetAngle=-(idx+0.5)*(2*Math.PI/N);
+  const targetAngle=-(idx+0.5)*(2*Math.PI/PRIZES.length);
   const total=spins*2*Math.PI+targetAngle-angle%(2*Math.PI);
   let start=null;
   function animate(timestamp){
@@ -89,21 +109,25 @@ function spin(){
     const t=Math.min(elapsed/3000,1);
     const ease=Math.pow(t,0.5);
     svg.style.transform=`rotate(${angle+total*ease}rad)`;
-    if(t<1) requestAnimationFrame(animate); else {spinning=false;angle+=total;showQR(idx);}
+    if(t<1) requestAnimationFrame(animate);
+    else {spinning=false;angle+=total;showQR(idx);}
   }
   requestAnimationFrame(animate);
 }
 
-/* QR Kodu */
+/* ---------------- QR Kod ---------------- */
 function showQR(idx){
   const qrContainer=document.getElementById('qrCode'); qrContainer.innerHTML='';
   const qr=new QRious({element:document.createElement('canvas'),value:`${PRIZES[idx].label}-${Date.now()}`});
   qrContainer.appendChild(qr.element);
 }
 
-/* Event Listeners */
+/* ---------------- Event Listeners ---------------- */
 document.getElementById('spinBtn').addEventListener('click',spin);
 document.getElementById('resetBtn').addEventListener('click',()=>{localStorage.removeItem(todayKey()); alert('Hakkınız sıfırlandı');});
+
+/* ---------------- Dinamik Ödül Yönetimi ---------------- */
+// PRIZES dizisine istediğin kadar ödül ekleyip çıkarabilirsin. drawWheel() ve drawLegend() otomatik günceller.
 </script>
 </body>
 </html>

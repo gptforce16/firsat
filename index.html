@@ -1,325 +1,134 @@
-<!DOCTYPE html><html lang="tr">
+<!DOCTYPE html>
+<html lang="tr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gerçekçi SVG Hediye Çarkı</title>
-<style>
-  :root{
-    --bg:#0b0f14; --text:#eaf2ff; --muted:#9bb1c7; --accent:#06c167; --rim:#e0e6f3;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;background:radial-gradient(1200px 800px at 80% -10%,#192334,#0b0f14);color:var(--text);font:16px/1.5 Inter,system-ui,Segoe UI,Roboto,Arial;display:grid;place-items:center;padding:20px}
-  .wrap{width:min(1100px,100%);display:grid;gap:20px}
-  .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
-  @media(max-width:900px){.grid{grid-template-columns:1fr}}
-  .card{background:linear-gradient(180deg,#15202b,#0f1720);border:1px solid #1b2a38;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,.45);padding:18px}
-  h1{font-size:clamp(22px,3vw,28px);margin:0 0 4px}
-  .sub{color:var(--muted);font-size:14px}.stage{display:grid;place-items:center;padding:24px} .wheel-box{position:relative;display:grid;place-items:center} .pointer{position:absolute;top:-6px;width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:28px solid var(--accent);filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));z-index:10} svg#wheel{width:min(560px,90vw);aspect-ratio:1/1;display:block}
-
-.hub{position:absolute;display:grid;place-items:center;width:min(160px,28vw);aspect-ratio:1;border-radius:50%;pointer-events:none} .hub .logo{font-weight:800;font-size:clamp(16px,3.6vw,22px);letter-spacing:.6px;text-align:center} .hub small{color:var(--muted)}
-
-.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px} button{cursor:pointer;appearance:none;border:0;border-radius:14px;padding:12px 16px;font-weight:700} .btn-primary{background:linear-gradient(180deg,#1af287,#0ec76d);color:#06120a;box-shadow:0 10px 18px rgba(8,212,122,.25)} .btn-ghost{background:#0f1620;border:1px solid #233246;color:var(--text)} button[disabled]{opacity:.6;cursor:not-allowed}
-
-.legend{display:grid;gap:10px} .row{display:flex;align-items:center;gap:10px} .dot{width:14px;height:14px;border-radius:4px} .meta{color:var(--muted);font-size:13px}
-
-.notice{font-size:13px;color:var(--muted)}
-
-/* Modal */ .modal{position:fixed;inset:0;display:none;place-items:center;padding:20px;background:rgba(6,10,14,.65);backdrop-filter:blur(4px);z-index:50} .modal.open{display:grid} .dialog{background:linear-gradient(180deg,#14202b,#0f1720);border:1px solid #1b2a38;border-radius:20px;box-shadow:0 18px 60px rgba(0,0,0,.5);padding:22px;max-width:460px;width:100%} .dialog .hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px} .dialog h3{margin:0;font-size:22px} .dialog p{margin:.3rem 0 0}
-
-/* Confetti */ canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:40} </style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerçekçi SVG Hediye Çarkı</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background: #f4f4f4;
+    }
+    #wheel {
+      width: 500px;
+      height: 500px;
+      transform-origin: 50% 50%;
+      transition: transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+    }
+    #pointer {
+      position: absolute;
+      top: calc(50% - 280px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    }
+    #spinBtn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(145deg, #f39c12, #e67e22);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+    #spinBtn:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>🎡 Gerçekçi SVG Hediye Çarkı</h1>
-      <div class="sub">Kodla çizilen, olasılıklı, fizik tabanlı animasyon ve tıkırtı sesi ile.</div>
-    </header><div class="grid">
-  <section class="card stage">
-    <div class="wheel-box">
-      <div class="pointer" aria-hidden="true"></div>
-      <!-- SVG ÇARK -->
-      <svg id="wheel" viewBox="0 0 1000 1000" aria-label="Hediye Çarkı" role="img">
-        <defs>
-          <!-- Metalik dış halka -->
-          <radialGradient id="gRim" cx="50%" cy="50%" r="60%">
-            <stop offset="0%" stop-color="#eef3ff"/>
-            <stop offset="45%" stop-color="#cdd7e8"/>
-            <stop offset="70%" stop-color="#8aa0b4"/>
-            <stop offset="100%" stop-color="#5f7187"/>
-          </radialGradient>
-          <!-- Dilim parlaklık -->
-          <linearGradient id="gGloss" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stop-color="rgba(255,255,255,.28)"/>
-            <stop offset="60%" stop-color="rgba(255,255,255,.06)"/>
-            <stop offset="100%" stop-color="rgba(0,0,0,.10)"/>
-          </linearGradient>
-          <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="rgba(0,0,0,.45)"/>
-          </filter>
-        </defs>
-        <!-- Dış metal halka ve peg'ler -->
-        <g id="rim" filter="url(#shadow)"></g>
-        <!-- Dilimler -->
-        <g id="slices"></g>
-        <!-- Etiketler -->
-        <g id="labels"></g>
-        <!-- Üst parlaklık -->
-        <g id="gloss"></g>
-      </svg>
 
-      <!-- Orta göbek -->
-      <div class="hub">
-        <div class="logo">MANÇO<br>PALAZZO</div>
-        <small>Spin & Win</small>
-      </div>
-    </div>
+<svg id="pointer" width="50" height="50" viewBox="-25 -25 50 50">
+  <!-- Sivri ucu aşağıya bakan altın sarısı üçgen -->
+  <polygon points="0,-22 18,20 -18,20" 
+           fill="gold" 
+           stroke="#b8860b" 
+           stroke-width="3" />
+</svg>
 
-    <div class="actions">
-      <button id="spinBtn" class="btn-primary">Çevir</button>
-      <button id="resetBtn" class="btn-ghost">Sıfırla</button>
-    </div>
-    <p class="notice">Cihaz başına günde 1 deneme. Ödüller stoklarla sınırlıdır. Google/Instagram zorunlu değildir.</p>
-  </section>
+<svg id="wheel" viewBox="0 0 500 500"></svg>
 
-  <aside class="card">
-    <div class="legend" id="legend"></div>
-    <hr style="border-color:#1b2a38;border-width:0 0 1px; margin:14px 0">
-    <div class="meta">
-      <p><strong>İpucu:</strong> Aşağıdaki <code>PRIZES</code> dizisindeki <code>weight</code> değerleriyle olasılıkları ayarlayın. Ödül ekleyip çıkarmak serbest.</p>
-    </div>
-  </aside>
-</div>
-
-  </div>  <!-- Sonuç Modalı -->  <div class="modal" id="resultModal" role="dialog" aria-modal="true" aria-labelledby="resTitle">
-    <div class="dialog">
-      <div class="hd">
-        <h3 id="resTitle">Tebrikler! 🎉</h3>
-        <button class="btn-ghost" id="closeModal">Kapat</button>
-      </div>
-      <p id="resText">Ödülünüz: …</p>
-    </div>
-  </div>  <!-- Konfeti --><canvas id="confetti"></canvas>
+<button id="spinBtn">Çevir</button>
 
 <script>
-/* =====================
-   1) YAPILANDIRMA
-   ===================== */
-let PRIZES = [
-  { label:"Ücretsiz Kahve", color:"#4ade80", weight: 8 },
-  { label:"%10 İndirim",    color:"#60a5fa", weight: 16 },
-  { label:"Tatlı İkram",    color:"#f59e0b", weight: 10 },
-  { label:"%20 İndirim",    color:"#22d3ee", weight: 6 },
-  { label:"Ücretsiz Latte", color:"#a78bfa", weight: 8 },
-  { label:"2. İçeceğe %50", color:"#fb7185", weight: 10 },
-  { label:"Şefin Sürprizi", color:"#34d399", weight: 42 }
+const wheel = document.getElementById("wheel");
+const spinBtn = document.getElementById("spinBtn");
+
+const PRIZES = [
+  { label: "%10 İndirim", color: "#f1c40f", weight: 1 },
+  { label: "Bedava Kahve", color: "#e67e22", weight: 1 },
+  { label: "%20 İndirim", color: "#1abc9c", weight: 1 },
+  { label: "Tatlı Hediye", color: "#3498db", weight: 1 },
+  { label: "Üzgünüm :(", color: "#9b59b6", weight: 1 },
+  { label: "%50 İndirim", color: "#e74c3c", weight: 1 },
 ];
 
-const SETTINGS = {
-  dailyLimit: 1,
-  minSpins: 4,
-  maxSpins: 7,
-  friction: 0.992,   // sürtünme
-  pegs: 48,          // tıkırtı için dış peg sayısı
-  clickPerPeg: true  // true: peg başına tık, false: slice geçişinde tık
-};
+const sliceAngle = 360 / PRIZES.length;
 
-/* =====================
-   2) SVG OLUŞTURMA
-   ===================== */
-const svg = document.getElementById('wheel');
-const gRim = document.getElementById('rim');
-const gSlices = document.getElementById('slices');
-const gLabels = document.getElementById('labels');
-const gGloss  = document.getElementById('gloss');
+// Çarkı çiz
+PRIZES.forEach((prize, i) => {
+  let startAngle = (i * sliceAngle) * Math.PI / 180;
+  let endAngle = ((i + 1) * sliceAngle) * Math.PI / 180;
 
-const N = ()=> PRIZES.length;
-const cx=500, cy=500, rOuter=480, rInner=130;
+  let x1 = 250 + 250 * Math.cos(startAngle);
+  let y1 = 250 + 250 * Math.sin(startAngle);
+  let x2 = 250 + 250 * Math.cos(endAngle);
+  let y2 = 250 + 250 * Math.sin(endAngle);
 
-function pc(cx,cy,r,a){return {x:cx+r*Math.cos(a), y:cy+r*Math.sin(a)}}
+  let pathData = `M250,250 L${x1},${y1} A250,250 0 0,1 ${x2},${y2} Z`;
 
-function drawRim(){
-  gRim.innerHTML='';
-  // dış halka
-  const outer = document.createElementNS('http://www.w3.org/2000/svg','circle');
-  outer.setAttribute('cx',cx); outer.setAttribute('cy',cy); outer.setAttribute('r',rOuter);
-  outer.setAttribute('fill','url(#gRim)');
-  outer.setAttribute('stroke','#2b3b4d'); outer.setAttribute('stroke-width','6');
-  gRim.appendChild(outer);
+  let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", pathData);
+  path.setAttribute("fill", prize.color);
+  path.setAttribute("stroke", "#fff");
+  path.setAttribute("stroke-width", "2");
+  wheel.appendChild(path);
 
-  const inner = document.createElementNS('http://www.w3.org/2000/svg','circle');
-  inner.setAttribute('cx',cx); inner.setAttribute('cy',cy); inner.setAttribute('r',rOuter-20);
-  inner.setAttribute('fill','none'); inner.setAttribute('stroke','#0e141c'); inner.setAttribute('stroke-width','8');
-  gRim.appendChild(inner);
+  // Etiket
+  let textAngle = (i + 0.5) * sliceAngle * Math.PI / 180;
+  let tx = 250 + 150 * Math.cos(textAngle);
+  let ty = 250 + 150 * Math.sin(textAngle);
 
-  // peg'ler
-  const pegCount = SETTINGS.pegs;
-  for(let i=0;i<pegCount;i++){
-    const a = i * 2*Math.PI/pegCount;
-    const p = pc(cx,cy,rOuter-8,a);
-    const peg = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    peg.setAttribute('cx',p.x); peg.setAttribute('cy',p.y); peg.setAttribute('r',4.5);
-    peg.setAttribute('fill','#f1f5ff'); peg.setAttribute('stroke','#1b2530'); peg.setAttribute('stroke-width','1');
-    gRim.appendChild(peg);
-  }
-}
+  let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  text.setAttribute("x", tx);
+  text.setAttribute("y", ty);
+  text.setAttribute("fill", "#000");
+  text.setAttribute("font-size", "16");
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("alignment-baseline", "middle");
+  text.setAttribute("transform", `rotate(${(i + 0.5) * sliceAngle}, ${tx}, ${ty})`);
+  text.textContent = prize.label;
+  wheel.appendChild(text);
+});
 
-function drawSlices(){
-  gSlices.innerHTML=''; gLabels.innerHTML=''; gGloss.innerHTML='';
-  const n=N();
-  const per=2*Math.PI/n; const base=-Math.PI/2;
-  for(let i=0;i<n;i++){
-    const a0=base+i*per, a1=a0+per; const p0=pc(cx,cy,rInner,a0), p1=pc(cx,cy,rOuter-36,a0), p2=pc(cx,cy,rOuter-36,a1), p3=pc(cx,cy,rInner,a1);
-    const d=`M ${p0.x},${p0.y} L ${p1.x},${p1.y} A ${rOuter-36},${rOuter-36} 0 0 1 ${p2.x},${p2.y} L ${p3.x},${p3.y} A ${rInner},${rInner} 0 0 0 ${p0.x},${p0.y} Z`;
+let currentRotation = 0;
 
-    const slice=document.createElementNS('http://www.w3.org/2000/svg','path');
-    slice.setAttribute('d',d); slice.setAttribute('fill',PRIZES[i].color); slice.setAttribute('stroke','rgba(0,0,0,.35)'); slice.setAttribute('stroke-width','2');
-    gSlices.appendChild(slice);
+spinBtn.addEventListener("click", () => {
+  let extraSpins = 5 * 360; // 5 tur
+  let randomAngle = Math.floor(Math.random() * 360);
+  let targetRotation = currentRotation + extraSpins + randomAngle;
 
-    // label
-    const mid=a0+per/2; const lp=pc(cx,cy,(rInner+rOuter-36)/2,mid);
-    const text=document.createElementNS('http://www.w3.org/2000/svg','text');
-    text.setAttribute('x',lp.x); text.setAttribute('y',lp.y); text.setAttribute('font-size','28'); text.setAttribute('font-weight','800'); text.setAttribute('fill','#0b1219'); text.setAttribute('text-anchor','middle'); text.setAttribute('dominant-baseline','middle'); text.setAttribute('transform',`rotate(${(mid*180/Math.PI)+90}, ${lp.x}, ${lp.y})`);
-    text.textContent=PRIZES[i].label; gLabels.appendChild(text);
-  }
-  // üst parlaklık halkası
-  const gloss = document.createElementNS('http://www.w3.org/2000/svg','circle');
-  gloss.setAttribute('cx',cx); gloss.setAttribute('cy',cy); gloss.setAttribute('r',rOuter-36);
-  gloss.setAttribute('fill','url(#gGloss)'); gloss.setAttribute('stroke','rgba(255,255,255,.07)'); gloss.setAttribute('stroke-width','1');
-  gGloss.appendChild(gloss);
-}
+  wheel.style.transition = "transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67)";
+  wheel.style.transform = `rotate(${targetRotation}deg)`;
 
-drawRim(); drawSlices();
+  setTimeout(() => {
+    currentRotation = targetRotation % 360;
 
-// Legend
-const legend = document.getElementById('legend');
-function drawLegend(){
-  legend.innerHTML='';
-  PRIZES.forEach(p=>{
-    const row=document.createElement('div'); row.className='row';
-    const dot=document.createElement('div'); dot.className='dot'; dot.style.background=p.color; row.appendChild(dot);
-    const span=document.createElement('div'); span.innerHTML=`<strong>${p.label}</strong>${p.note?`<br><small class=\"meta\">${p.note}</small>`:''}`; row.appendChild(span);
-    legend.appendChild(row);
-  });
-}
-drawLegend();
+    let adjustedAngle = (360 - currentRotation) % 360;
+    let winningIndex = Math.floor(adjustedAngle / sliceAngle);
+    alert("Kazandın: " + PRIZES[winningIndex].label);
+  }, 5200);
+});
+</script>
 
-/* =====================
-   3) OLASILIK & SEÇİM
-   ===================== */
-function weightedPick(){
-  const total = PRIZES.reduce((a,b)=>a+(b.weight||1),0);
-  let r = Math.random()*total;
-  for(let i=0;i<PRIZES.length;i++){ r -= (PRIZES[i].weight||1); if(r<=0) return i; }
-  return PRIZES.length-1;
-}
-
-/* =====================
-   4) FİZİK, SES ve ANİMASYON
-   ===================== */
-let angle=0, velocity=0, spinning=false; // radyan
-const perSlice = ()=> 2*Math.PI/PRIZES.length;
-
-// Tıkırtı sesi – WebAudio ile basit klik
-let actx; let lastTickIndex = 0;
-function click(){
-  if(!actx){ try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; } }
-  const o=actx.createOscillator(); const g=actx.createGain();
-  o.type='square'; o.frequency.value=1100; g.gain.value=0.1;
-  o.connect(g).connect(actx.destination);
-  o.start(); setTimeout(()=>{o.stop();}, 20);
-}
-
-function maybeTick(prevAngle, nextAngle){
-  if(SETTINGS.clickPerPeg){
-    const pegStep = 2*Math.PI/SETTINGS.pegs; // her peg arası açı
-    const prev = (prevAngle%(2*Math.PI)+2*Math.PI)%(2*Math.PI);
-    const next = (nextAngle%(2*Math.PI)+2*Math.PI)%(2*Math.PI);
-    const prevIndex = Math.floor(prev/pegStep);
-    const nextIndex = Math.floor(next/pegStep);
-    if(nextIndex!==prevIndex) click();
-  } else {
-    // dilim geçişinde tık
-    const prevIndex = Math.floor((prevAngle+Math.PI/2)/perSlice());
-    const nextIndex = Math.floor((nextAngle+Math.PI/2)/perSlice());
-    if(nextIndex!==prevIndex) click();
-  }
-}
-
-function render(){ svg.style.transform = `rotate(${angle}rad)`; }
-
-function step(){
-  if(!spinning) return;
-  const prev = angle;
-  angle += velocity;
-  velocity *= SETTINGS.friction;
-  maybeTick(prev, angle);
-  render();
-  if(velocity < 0.002){ spinning=false; finalize(); return; }
-  requestAnimationFrame(step);
-}
-
-function spin(){
-  if(spinning) return;
-  if(!consumeDailyToken()){ openModal('Bugünlük hakkın doldu 🕑','Yarın tekrar dene veya yetkiliye danış.'); return; }
-  spinning=true; disableBtn(true);
-
-  const idx = weightedPick();
-  const n = PRIZES.length; const base=-Math.PI/2; const per = 2*Math.PI/n;
-  const target = base + (idx+0.5)*per; // işaretçi tepesine hizalanacak merkez
-
-  const spins = randInt(SETTINGS.minSpins, SETTINGS.maxSpins);
-  const current = ((angle%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
-  let delta = target - current; if(delta<0) delta += 2*Math.PI;
-  const total = spins*2*Math.PI + delta;
-
-  velocity = Math.max(0.35, total*0.18); // başlangıç hızı – hedefe göre
-  spin._pendingIndex = idx;
-  requestAnimationFrame(step);
-}
-
-function finalize(){
-  disableBtn(false);
-  const idx = spin._pendingIndex ?? 0; const prize = PRIZES[idx];
-  confettiBurst();
-  openModal('Tebrikler! 🎉', `Ödülünüz: <strong>${prize.label}</strong>`);
-}
-
-function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a}
-function disableBtn(d){ document.getElementById('spinBtn').disabled=d; }
-
-/* =====================
-   5) GÜNLÜK LİMİT (LOCALSTORAGE)
-   ===================== */
-function todayKey(){ const d=new Date(); return `spin:${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}` }
-function consumeDailyToken(){
-  try{ const k=todayKey(); const used=Number(localStorage.getItem(k)||'0'); if(used>=SETTINGS.dailyLimit) return false; localStorage.setItem(k, String(used+1)); return true; }catch(e){ return true; }
-}
-function resetDaily(){ try{ localStorage.removeItem(todayKey()); }catch(e){} }
-
-/* =====================
-   6) MODAL & CONFETTI
-   ===================== */
-const modal=document.getElementById('resultModal');
-const resText=document.getElementById('resText');
-function openModal(title, html){ document.getElementById('resTitle').textContent=title; resText.innerHTML=html; modal.classList.add('open'); }
-
-document.getElementById('closeModal').onclick=()=> modal.classList.remove('open');
-modal.addEventListener('click',(e)=>{ if(e.target===modal) modal.classList.remove('open'); });
-
-const cnf=document.getElementById('confetti'); const ctx=cnf.getContext('2d'); let confetti=[];
-function resize(){ cnf.width=innerWidth; cnf.height=innerHeight }
-addEventListener('resize',resize); resize();
-function confettiBurst(){ const C=140; confetti.length=0; for(let i=0;i<C;i++) confetti.push({x:innerWidth/2,y:innerHeight*0.25,vx:(Math.random()-0.5)*8,vy:Math.random()*-6-6,r:Math.random()*3+2,t:0,rot:Math.random()*6.28}); (function tick(){ ctx.clearRect(0,0,cnf.width,cnf.height); confetti.forEach(p=>{ p.t+=0.02; p.vy+=0.25; p.x+=p.vx; p.y+=p.vy; p.rot+=0.1; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=`hsl(${(p.x+p.y)%360},90%,60%)`; ctx.fillRect(-p.r,-p.r,p.r*2,p.r*2); ctx.restore(); }); confetti=confetti.filter(p=> p.y < cnf.height+20); if(confetti.length) requestAnimationFrame(tick); })(); }
-
-/* =====================
-   7) ETKİLEŞİM
-   ===================== */
-document.getElementById('spinBtn').addEventListener('click', spin);
-document.getElementById('resetBtn').addEventListener('click', ()=>{ resetDaily(); openModal('Sıfırlandı ✅','Bugünkü deneme hakkı sıfırlandı.'); });
-
-// İlk çizim
-(function init(){ render(); })();
-</script></body>
+</body>
 </html>

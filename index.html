@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="tr">
+<!DOCTYPE html><html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerçekçi SVG Hediye Çarkı</title>
+  <title>Profesyonel SVG Hediye Çarkı</title>
   <style>
     body {
       display: flex;
@@ -12,6 +11,7 @@
       flex-direction: column;
       height: 100vh;
       background: #f4f4f4;
+      font-family: Arial, sans-serif;
     }
     #wheel {
       width: 500px;
@@ -21,7 +21,7 @@
     }
     #pointer {
       position: absolute;
-      top: calc(50% - 280px);
+      top: calc(50% - 270px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
@@ -45,17 +45,9 @@
     }
   </style>
 </head>
-<body>
-
-<svg id="pointer" width="50" height="50" viewBox="-25 -25 50 50">
-  <!-- Sivri ucu aşağıya bakan altın sarısı üçgen -->
-  <polygon points="0,-22 18,20 -18,20" 
-           fill="gold" 
-           stroke="#b8860b" 
-           stroke-width="3" />
-</svg>
-
-<svg id="wheel" viewBox="0 0 500 500"></svg>
+<body><!-- Profesyonel, altın sarısı ve gölgeli pointer --><svg id="pointer" width="50" height="50" viewBox="-25 -25 50 50">
+  <polygon points="0,-22 18,20 -18,20" fill="gold" stroke="#b8860b" stroke-width="3"/>
+</svg><svg id="wheel" viewBox="0 0 500 500"></svg>
 
 <button id="spinBtn">Çevir</button>
 
@@ -64,12 +56,12 @@ const wheel = document.getElementById("wheel");
 const spinBtn = document.getElementById("spinBtn");
 
 const PRIZES = [
-  { label: "%10 İndirim", color: "#f1c40f", weight: 1 },
-  { label: "Bedava Kahve", color: "#e67e22", weight: 1 },
-  { label: "%20 İndirim", color: "#1abc9c", weight: 1 },
-  { label: "Tatlı Hediye", color: "#3498db", weight: 1 },
-  { label: "Üzgünüm :(", color: "#9b59b6", weight: 1 },
-  { label: "%50 İndirim", color: "#e74c3c", weight: 1 },
+  { label: "%10 İndirim", color: "#f1c40f" },
+  { label: "Bedava Kahve", color: "#e67e22" },
+  { label: "%20 İndirim", color: "#1abc9c" },
+  { label: "Tatlı Hediye", color: "#3498db" },
+  { label: "Üzgünüm :(", color: "#9b59b6" },
+  { label: "%50 İndirim", color: "#e74c3c" },
 ];
 
 const sliceAngle = 360 / PRIZES.length;
@@ -85,7 +77,6 @@ PRIZES.forEach((prize, i) => {
   let y2 = 250 + 250 * Math.sin(endAngle);
 
   let pathData = `M250,250 L${x1},${y1} A250,250 0 0,1 ${x2},${y2} Z`;
-
   let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   path.setAttribute("d", pathData);
   path.setAttribute("fill", prize.color);
@@ -93,7 +84,7 @@ PRIZES.forEach((prize, i) => {
   path.setAttribute("stroke-width", "2");
   wheel.appendChild(path);
 
-  // Etiket
+  // Dilim etiketini ekle
   let textAngle = (i + 0.5) * sliceAngle * Math.PI / 180;
   let tx = 250 + 150 * Math.cos(textAngle);
   let ty = 250 + 150 * Math.sin(textAngle);
@@ -113,7 +104,7 @@ PRIZES.forEach((prize, i) => {
 let currentRotation = 0;
 
 spinBtn.addEventListener("click", () => {
-  let extraSpins = 5 * 360; // 5 tur
+  let extraSpins = 5 * 360;
   let randomAngle = Math.floor(Math.random() * 360);
   let targetRotation = currentRotation + extraSpins + randomAngle;
 
@@ -122,13 +113,10 @@ spinBtn.addEventListener("click", () => {
 
   setTimeout(() => {
     currentRotation = targetRotation % 360;
-
-    let adjustedAngle = (360 - currentRotation) % 360;
+    let adjustedAngle = (360 - currentRotation + sliceAngle / 2) % 360;
     let winningIndex = Math.floor(adjustedAngle / sliceAngle);
     alert("Kazandın: " + PRIZES[winningIndex].label);
   }, 5200);
 });
-</script>
-
-</body>
+</script></body>
 </html>

@@ -1,130 +1,133 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profesyonel SVG Hediye Çarkı</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      height: 100vh;
-      background: #f4f4f4;
-      font-family: Arial, sans-serif;
-    }
-    #wheel {
-      width: 500px;
-      height: 500px;
-      transform-origin: 50% 50%;
-      transition: transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
-    }
-    #pointer {
-      position: absolute;
-      top: calc(50% - 270px);
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-    }
-    #spinBtn {
-      margin-top: 30px;
-      padding: 12px 24px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(145deg, #f39c12, #e67e22);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-    }
-    #spinBtn:hover {
-      transform: scale(1.05);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İşletme İçi Dinamik Hediye Çarkı</title>
+<style>
+  body{margin:0;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#0b0f14;color:#fff;}
+  .wheel-container{position:relative;width:90vw;max-width:500px;}
+  svg#wheel{width:100%;height:auto;transform-origin:center center;transition:transform 4s cubic-bezier(0.33,1,0.68,1);}
+  .pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-bottom:30px solid #06c167;}
+  .spin-btn, .reset-btn{margin:10px;padding:12px 20px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;}
+  .spin-btn{background:#08d47a;color:#06120a;}
+  .reset-btn{background:#233246;color:#fff;}
+  .qr-code{margin-top:20px;}
+  .prizes-legend{margin-top:10px;}
+</style>
 </head>
 <body>
 
-<!-- Profesyonel, altın sarısı ve gölgeli pointer -->
-<svg id="pointer" width="50" height="50" viewBox="-25 -25 50 50">
-  <polygon points="0,-22 18,20 -18,20" fill="gold" stroke="#b8860b" stroke-width="3"/>
-</svg>
+<h2>🎁 İşletme İçi Dinamik Hediye Çarkı</h2>
+<div class="wheel-container">
+  <div class="pointer"></div>
+  <svg id="wheel" viewBox="0 0 1000 1000"></svg>
+</div>
+<div>
+  <button class="spin-btn" id="spinBtn">Çevir</button>
+  <button class="reset-btn" id="resetBtn">Sıfırla</button>
+</div>
+<div class="qr-code" id="qrCode"></div>
+<div class="prizes-legend" id="legend"></div>
 
-<svg id="wheel" viewBox="0 0 500 500"></svg>
-
-<button id="spinBtn">Çevir</button>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 <script>
-const wheel = document.getElementById("wheel");
-const spinBtn = document.getElementById("spinBtn");
-
-const PRIZES = [
-  { label: "%10 İndirim", color: "#f1c40f" },
-  { label: "Bedava Kahve", color: "#e67e22" },
-  { label: "%20 İndirim", color: "#1abc9c" },
-  { label: "Tatlı Hediye", color: "#3498db" },
-  { label: "Üzgünüm :(", color: "#9b59b6" },
-  { label: "%50 İndirim", color: "#e74c3c" },
+/* ---------------- Ödül Dizisi ---------------- */
+let PRIZES=[
+  {label:"Ücretsiz Kahve", color:"#4ade80", weight:8},
+  {label:"%10 İndirim", color:"#60a5fa", weight:16},
+  {label:"Tatlı İkram", color:"#f59e0b", weight:10},
+  {label:"Teşekkürler 💚", color:"#94a3b8", weight:34},
+  {label:"%20 İndirim", color:"#22d3ee", weight:6}
 ];
 
-const sliceAngle = 360 / PRIZES.length;
+/* ---------------- Ayarlar ---------------- */
+const SETTINGS={dailyLimit:1,minSpins:4,maxSpins:7};
 
-// Çarkı çiz
-PRIZES.forEach((prize, i) => {
-  let startAngle = (i * sliceAngle) * Math.PI / 180;
-  let endAngle = ((i + 1) * sliceAngle) * Math.PI / 180;
+/* ---------------- SVG Çark Oluşturma ---------------- */
+const svg=document.getElementById('wheel');
+function drawWheel(){
+  svg.innerHTML=''; // önce temizle
+  const N=PRIZES.length;
+  const cx=500,cy=500,rOuter=480,rInner=120;
+  function pc(cx,cy,r,a){return {x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)};}
+  for(let i=0;i<N;i++){
+    const a0=-Math.PI/2+i*2*Math.PI/N,a1=a0+2*Math.PI/N;
+    const p0=pc(cx,cy,rInner,a0),p1=pc(cx,cy,rOuter,a0),p2=pc(cx,cy,rOuter,a1),p3=pc(cx,cy,rInner,a1);
+    const path=`M${p0.x},${p0.y} L${p1.x},${p1.y} A${rOuter},${rOuter} 0 0 1 ${p2.x},${p2.y} L${p3.x},${p3.y} A${rInner},${rInner} 0 0 0 ${p0.x},${p0.y} Z`;
+    const slice=document.createElementNS('http://www.w3.org/2000/svg','path');
+    slice.setAttribute('d',path);
+    slice.setAttribute('fill',PRIZES[i].color);
+    slice.setAttribute('stroke','#000');
+    slice.setAttribute('stroke-width','2');
+    svg.appendChild(slice);
+  }
+}
+drawWheel();
 
-  let x1 = 250 + 250 * Math.cos(startAngle);
-  let y1 = 250 + 250 * Math.sin(startAngle);
-  let x2 = 250 + 250 * Math.cos(endAngle);
-  let y2 = 250 + 250 * Math.sin(endAngle);
+/* ---------------- Legend ---------------- */
+const legend=document.getElementById('legend');
+function drawLegend(){
+  legend.innerHTML='';
+  PRIZES.forEach(p=>{
+    const div=document.createElement('div');
+    div.innerHTML=`<span style="display:inline-block;width:14px;height:14px;background:${p.color};margin-right:6px;"></span>${p.label}`;
+    legend.appendChild(div);
+  });
+}
+drawLegend();
 
-  let pathData = `M250,250 L${x1},${y1} A250,250 0 0,1 ${x2},${y2} Z`;
-  let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("d", pathData);
-  path.setAttribute("fill", prize.color);
-  path.setAttribute("stroke", "#fff");
-  path.setAttribute("stroke-width", "2");
-  wheel.appendChild(path);
+/* ---------------- Weighted Pick ---------------- */
+function weightedPick(){
+  const totalWeight=PRIZES.reduce((a,b)=>a+b.weight,0);
+  let r=Math.random()*totalWeight;
+  for(let i=0;i<PRIZES.length;i++){
+    r-=PRIZES[i].weight;
+    if(r<=0) return i;
+  }
+  return PRIZES.length-1;
+}
 
-  // Dilim etiketini ekle
-  let textAngle = (i + 0.5) * sliceAngle * Math.PI / 180;
-  let tx = 250 + 150 * Math.cos(textAngle);
-  let ty = 250 + 150 * Math.sin(textAngle);
+/* ---------------- Günlük Limit ---------------- */
+function todayKey(){const d=new Date();return `spin:${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;}
+function consumeDailyToken(){try{const k=todayKey(),used=Number(localStorage.getItem(k)||'0'); if(used>=SETTINGS.dailyLimit)return false; localStorage.setItem(k,used+1); return true;}catch(e){return true;}}
 
-  let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  text.setAttribute("x", tx);
-  text.setAttribute("y", ty);
-  text.setAttribute("fill", "#000");
-  text.setAttribute("font-size", "16");
-  text.setAttribute("text-anchor", "middle");
-  text.setAttribute("alignment-baseline", "middle");
-  text.setAttribute("transform", `rotate(${(i + 0.5) * sliceAngle}, ${tx}, ${ty})`);
-  text.textContent = prize.label;
-  wheel.appendChild(text);
-});
+/* ---------------- Spin ---------------- */
+let spinning=false,angle=0;
+function spin(){
+  if(spinning) return;
+  if(!consumeDailyToken()){alert("Bugünlük hakkınız doldu"); return;}
+  spinning=true;
+  const idx=weightedPick();
+  const spins=Math.floor(Math.random()*(SETTINGS.maxSpins-SETTINGS.minSpins+1))+SETTINGS.minSpins;
+  const targetAngle=-(idx+0.5)*(2*Math.PI/PRIZES.length);
+  const total=spins*2*Math.PI+targetAngle-angle%(2*Math.PI);
+  let start=null;
+  function animate(timestamp){
+    if(!start) start=timestamp;
+    const elapsed=timestamp-start;
+    const t=Math.min(elapsed/3000,1);
+    const ease=Math.pow(t,0.5);
+    svg.style.transform=`rotate(${angle+total*ease}rad)`;
+    if(t<1) requestAnimationFrame(animate);
+    else {spinning=false;angle+=total;showQR(idx);}
+  }
+  requestAnimationFrame(animate);
+}
 
-let currentRotation = 0;
+/* ---------------- QR Kod ---------------- */
+function showQR(idx){
+  const qrContainer=document.getElementById('qrCode'); qrContainer.innerHTML='';
+  const qr=new QRious({element:document.createElement('canvas'),value:`${PRIZES[idx].label}-${Date.now()}`});
+  qrContainer.appendChild(qr.element);
+}
 
-spinBtn.addEventListener("click", () => {
-  let extraSpins = 5 * 360;
-  let randomAngle = Math.floor(Math.random() * 360);
-  let targetRotation = currentRotation + extraSpins + randomAngle;
+/* ---------------- Event Listeners ---------------- */
+document.getElementById('spinBtn').addEventListener('click',spin);
+document.getElementById('resetBtn').addEventListener('click',()=>{localStorage.removeItem(todayKey()); alert('Hakkınız sıfırlandı');});
 
-  wheel.style.transition = "transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67)";
-  wheel.style.transform = `rotate(${targetRotation}deg)`;
-
-  setTimeout(() => {
-    currentRotation = targetRotation % 360;
-    let adjustedAngle = (360 - currentRotation + sliceAngle / 2) % 360;
-    let winningIndex = Math.floor(adjustedAngle / sliceAngle);
-    alert("Kazandın: " + PRIZES[winningIndex].label);
-  }, 5200);
-});
+/* ---------------- Dinamik Ödül Yönetimi ---------------- */
+// PRIZES dizisine istediğin kadar ödül ekleyip çıkarabilirsin. drawWheel() ve drawLegend() otomatik günceller.
 </script>
-
 </body>
 </html>

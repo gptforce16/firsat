@@ -262,8 +262,33 @@ body {
 
 <!-- PRINT AREA (A4 PDF LAYOUT) -->
 <div id="print-area">
-    <!-- GRAPH SECTION -->
-    <div class="border-2 border-black flex flex-col mb-1 w-full" style="height: 120mm;">
+
+    <!-- 1. KÜNYE TABLOSU (En üstte konumlandırıldı) -->
+    <table class="w-full print-table text-[10px] mb-2 font-bold bg-white text-left">
+        <tbody>
+            <tr>
+                <td class="w-[15%]">Adres</td>
+                <td id="pdf_adres" class="font-normal w-[35%]">-</td>
+                <td class="w-[15%]">Sorumlu Mühendis</td>
+                <td id="pdf_muhendis" class="font-normal w-[35%]">-</td>
+            </tr>
+            <tr>
+                <td>Ada/Parsel</td>
+                <td id="pdf_ada" class="font-normal">-</td>
+                <td>DSİ Belge No</td>
+                <td id="pdf_dsi" class="font-normal">-</td>
+            </tr>
+            <tr>
+                <td>Kuyu Sahibi</td>
+                <td id="pdf_sahip" class="font-normal">-</td>
+                <td>Tarih</td>
+                <td id="pdf_tarih_val" class="font-normal">-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 2. GRAPH SECTION -->
+    <div class="border-2 border-black flex flex-col mb-2 w-full" style="height: 105mm; min-height: 105mm;">
         <div class="text-center font-bold border-b-2 border-black py-1 text-[12px] bg-gray-50 uppercase">DÜŞÜM - ZAMAN GRAFİĞİ</div>
         <div class="flex-1 p-1 flex justify-center items-center overflow-hidden relative">
             <!-- Canvas resme dönüşüp buraya basılacak -->
@@ -271,43 +296,14 @@ body {
         </div>
     </div>
 
-    <!-- DETAILS & CALCULATIONS SECTION -->
+    <!-- 3. DETAILS & CALCULATIONS SECTION -->
     <div class="flex gap-2 flex-1 w-full overflow-hidden">
-        <!-- LEFT COLUMN (Künye + Veri Tablosu) -->
+        
+        <!-- LEFT COLUMN (Veri Tablosu) -->
         <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Künye Tablosu -->
-            <table class="w-full print-table text-[10px] mb-2 font-bold bg-white text-left">
-                <tbody>
-                    <tr>
-                        <td class="w-[30%]">Adres</td>
-                        <td id="pdf_adres" class="font-normal">-</td>
-                    </tr>
-                    <tr>
-                        <td>Ada/Parsel</td>
-                        <td id="pdf_ada" class="font-normal">-</td>
-                    </tr>
-                    <tr>
-                        <td>Kuyu Sahibi</td>
-                        <td id="pdf_sahip" class="font-normal">-</td>
-                    </tr>
-                    <tr>
-                        <td>Sorumlu Mühendis</td>
-                        <td id="pdf_muhendis" class="font-normal">-</td>
-                    </tr>
-                    <tr>
-                        <td>DSİ Belge No</td>
-                        <td id="pdf_dsi" class="font-normal">-</td>
-                    </tr>
-                    <tr>
-                        <td>Tarih</td>
-                        <td id="pdf_tarih_val" class="font-normal">-</td>
-                    </tr>
-                </tbody>
-            </table>
-
             <div class="text-center font-bold text-[11px] mb-1 uppercase tracking-wider border-b border-black pb-0.5">SABİT SEVİYELİ DÜŞÜM DENEYİ</div>
             
-            <!-- Dinamik Veri Tablosu Çıktısı (Çok uzun olmaması için CSS Sütunlar veya limitli liste) -->
+            <!-- Dinamik Veri Tablosu Çıktısı -->
             <div class="flex-1 overflow-hidden">
                 <table class="w-full print-table text-[9px] text-center bg-white" id="pdf_data_table">
                     <thead>
@@ -319,7 +315,7 @@ body {
                         </tr>
                     </thead>
                     <tbody id="pdf_data_tbody">
-                        <!-- JS ile aktarılacak (Sadece ilk 35 satır sığar, şablondaki miktar idealdir) -->
+                        <!-- JS ile aktarılacak (Sığması için makul sayıda satır) -->
                     </tbody>
                 </table>
             </div>
@@ -356,10 +352,10 @@ body {
                 </div>
                 
                 <div class="mt-4">
-                    T = (0,183 X Q) / Δd
+                    T = (0,183 &times; Q) / Δd
                 </div>
                 <div>
-                    T = (0,183 X <span id="pdf_eq_Q" class="font-normal"></span>) / <span id="pdf_eq_dd_div" class="font-normal"></span>
+                    T = (0,183 &times; <span id="pdf_eq_Q" class="font-normal"></span>) / <span id="pdf_eq_dd_div" class="font-normal"></span>
                 </div>
                 <div>
                     T = <span id="pdf_res_T_msn" class="font-normal text-blue-700"></span> m²/sn = <span id="pdf_res_T_mgun" class="font-normal"></span> m²/gün
@@ -449,11 +445,6 @@ function renderTable() {
         `;
         tbody.appendChild(tr);
     });
-    
-    if(!document.getElementById('p_dinamik').value && maxDrawdown > 0) {
-        // Dinamik seviyeyi en son okunan seviyeye göre yaz
-        // if user hasn't overridden it manually
-    }
 }
 
 function addNewRow() {
@@ -521,11 +512,12 @@ function getDrawdownAt(t) {
     return Math.max(0, d);
 }
 
-function formatScientific(num) {
+// Bilimsel gösterimi standart formata çevirme (örn: 1.3 × 10⁻⁴)
+function formatScientificHTML(num) {
     if (num === 0 || isNaN(num) || !isFinite(num)) return "0.00";
     let [base, exp] = num.toExponential(1).split('e');
-    exp = exp.replace('+', ''); // remove + sign
-    return `${base}E${exp}`;
+    let exponent = parseInt(exp, 10);
+    return `${base} &times; 10<sup>${exponent}</sup>`;
 }
 
 // Main Calculation Flow
@@ -547,9 +539,6 @@ function calculateAll() {
     let K_msn = 0;
     
     if (deltaD > 0 && Q > 0) {
-        // Formül: T = (0.183 * Q(m3/s)) / deltaD. Q lt/sn olduğu için 1000'e böleriz.
-        // PDF'teki denklemde (0.183 x 8.0) / 11.00 yapıp sonucu 1.3E-04 veriyor.
-        // 0.183 * 8 = 1.464. 1.464 / 11 = 0.133. 1.3E-04 = 0.000133. Yani Q = m3/sn olarak hesaplanmış.
         let Q_m3s = Q / 1000;
         T_msn = (0.183 * Q_m3s) / deltaD;
         T_mgun = T_msn * 86400;
@@ -558,8 +547,8 @@ function calculateAll() {
     
     // Update UI
     document.getElementById('ui_res_dd').innerText = deltaD > 0 ? deltaD.toFixed(2) : "0.00";
-    document.getElementById('ui_res_T').innerText = formatScientific(T_msn);
-    document.getElementById('ui_res_K').innerText = formatScientific(K_msn);
+    document.getElementById('ui_res_T').innerHTML = formatScientificHTML(T_msn);
+    document.getElementById('ui_res_K').innerHTML = formatScientificHTML(K_msn);
     
     updateChart(t1, t2, d1, d2, deltaD);
 }
@@ -706,21 +695,21 @@ function prepareAndPrint() {
     document.getElementById('pdf_eq_dd_div').innerText = deltaD.toFixed(2);
     document.getElementById('pdf_eq_Q').innerText = Q.toFixed(1);
     
-    document.getElementById('pdf_res_T_msn').innerText = document.getElementById('ui_res_T').innerText;
+    document.getElementById('pdf_res_T_msn').innerHTML = document.getElementById('ui_res_T').innerHTML;
     
     // calculate T_mgun for pdf display manually
     let T_msn = (0.183 * (Q/1000)) / (deltaD > 0 ? deltaD : 1);
     document.getElementById('pdf_res_T_mgun').innerText = (T_msn * 86400).toFixed(3);
     
-    document.getElementById('pdf_eq_T').innerText = document.getElementById('ui_res_T').innerText;
+    document.getElementById('pdf_eq_T').innerHTML = document.getElementById('ui_res_T').innerHTML;
     document.getElementById('pdf_eq_e').innerText = document.getElementById('p_kalinlik').value || "1";
-    document.getElementById('pdf_res_K').innerText = document.getElementById('ui_res_K').innerText;
+    document.getElementById('pdf_res_K').innerHTML = document.getElementById('ui_res_K').innerHTML;
     
     // Veri Tablosu PDF Aktarımı
     const tbody = document.getElementById('pdf_data_tbody');
     tbody.innerHTML = '';
-    // Sadece grafiği kalabalık etmeyecek kadar makul sayıda satır yazdırıyoruz (maksimum ~35)
-    let printData = dataPoints.slice(0, 35); 
+    // Taşma olmaması için en fazla ~32 satır aktarılıyor
+    let printData = dataPoints.slice(0, 32); 
     printData.forEach(p => {
         let d = Math.max(0, p.level - statik).toFixed(2);
         let tr = `<tr><td>${p.t}</td><td>${p.level.toFixed(2)}</td><td>${d}</td><td>${p.debi}</td></tr>`;

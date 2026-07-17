@@ -59,6 +59,9 @@ body {
 }
 
 /* Tablo çizgileri (Print) */
+.print-table {
+    border-collapse: collapse;
+}
 .print-table td, .print-table th {
     border: 1px solid #000;
     padding: 3px 5px;
@@ -193,15 +196,15 @@ body {
             <!-- Sonuçlar ve Grafik -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col">
                 
-                <!-- Otomatik Hesaplama Çıktısı (Renkler gri tonlarına alındı) -->
+                <!-- Otomatik Hesaplama Çıktısı (Renkler gri tonlarına alındı, K kalın) -->
                 <div class="grid grid-cols-3 gap-4 mb-4 pb-4 border-b border-slate-100">
                     <div class="bg-slate-50 rounded-lg p-3 border border-slate-200 flex flex-col justify-center items-center">
                         <span class="text-[10px] font-bold text-slate-500 uppercase">Düşüm Farkı (Δd)</span>
-                        <span class="text-xl font-bold text-slate-800 font-mono mt-1" id="ui_res_dd">0</span>
+                        <span class="text-xl text-slate-800 font-mono mt-1" id="ui_res_dd">0</span>
                     </div>
                     <div class="bg-slate-50 rounded-lg p-3 border border-slate-200 flex flex-col justify-center items-center">
                         <span class="text-[10px] font-bold text-slate-500 uppercase">İletim (T) m²/sn</span>
-                        <span class="text-xl font-bold text-slate-800 font-mono mt-1" id="ui_res_T">0.00</span>
+                        <span class="text-xl text-slate-800 font-mono mt-1" id="ui_res_T">0.00</span>
                     </div>
                     <div class="bg-slate-50 rounded-lg p-3 border border-slate-200 flex flex-col justify-center items-center">
                         <span class="text-[10px] font-bold text-slate-500 uppercase">Hid. İletkenlik (K) m/sn</span>
@@ -265,7 +268,7 @@ body {
                 <td class="w-[15%]">Adres</td>
                 <td id="pdf_adres" class="font-normal w-[35%]">-</td>
                 <td class="w-[20%] whitespace-nowrap">Sorumlu Mühendis</td>
-                <td id="pdf_muhendis" class="font-normal w-[30%]">-</td>
+                <td id="pdf_muhendis" class="font-normal w-[30%] whitespace-nowrap">-</td>
             </tr>
             <tr>
                 <td>Ada/Parsel</td>
@@ -286,26 +289,24 @@ body {
     <div class="flex gap-4 flex-1 w-full overflow-hidden">
         
         <!-- SOL SÜTUN: Veri Tablosu ve İmza Alanı -->
-        <div class="w-[35%] flex flex-col h-full overflow-hidden gap-4 mt-0">
-            <!-- Tablo Çerçevesi (Grafikle Üstten Aynı Hizada) -->
-            <div class="flex-1 overflow-hidden border border-black">
-                <table class="w-full print-table text-[10px] text-center bg-white border-none" id="pdf_data_table">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="py-1 border-t-0 border-l-0">Zaman (dk)</th>
-                            <th class="py-1 border-t-0">Seviye (m)</th>
-                            <th class="py-1 border-t-0">Düşüm (m)</th>
-                            <th class="py-1 border-t-0 border-r-0">Debi (lt/sn)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pdf_data_tbody">
-                        <!-- JS ile dolacak -->
-                    </tbody>
-                </table>
-            </div>
+        <div class="w-[35%] flex flex-col h-full gap-2 mt-0">
+            <!-- Tablo Çerçevesi Dışındaki Ekstra Çerçeve Kaldırıldı -->
+            <table class="w-full print-table text-[10px] text-center bg-white" id="pdf_data_table">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="py-1">Zaman (dk)</th>
+                        <th class="py-1">Seviye (m)</th>
+                        <th class="py-1">Düşüm (m)</th>
+                        <th class="py-1">Debi (lt/sn)</th>
+                    </tr>
+                </thead>
+                <tbody id="pdf_data_tbody">
+                    <!-- JS ile dolacak -->
+                </tbody>
+            </table>
             
-            <!-- İMZA ALANI -->
-            <div class="border border-black p-3 flex flex-col items-center justify-end h-[30mm] shrink-0 mb-1">
+            <!-- İMZA ALANI (mb-auto ile tablonun hemen altına yapışması sağlandı) -->
+            <div class="border border-black p-3 flex flex-col items-center justify-end h-[25mm] shrink-0 mt-2 mb-auto">
                 <div class="w-2/3 border-b border-black mb-1.5"></div>
                 <div class="text-[11px] font-bold whitespace-nowrap">Sorumlu Mühendis</div>
                 <div id="pdf_imza_isim" class="text-[10px] mt-0.5 h-3"></div>
@@ -315,9 +316,8 @@ body {
         <!-- SAĞ SÜTUN: Grafik + Parametreler + Şık Formül Alanı -->
         <div class="w-[65%] flex flex-col gap-4 h-full mt-0">
             
-            <!-- Grafik (Daha Geniş ve Sığdırılmış Alan) -->
+            <!-- Grafik (Daha Geniş ve Sığdırılmış Alan, yükseklik 100mm) -->
             <div class="border border-black flex flex-col w-full h-[100mm] shrink-0">
-                <!-- Arka plandaki renk kaldırıldı -->
                 <div class="text-center font-bold border-b border-black py-1 text-[12px] uppercase">Düşüm - Zaman Grafiği</div>
                 <div class="flex-1 p-2 flex justify-center items-center overflow-hidden relative">
                     <img id="pdf_chart_img" src="" class="w-full h-full object-contain absolute inset-0 p-2">
@@ -441,24 +441,25 @@ function generateData() {
         let currentDebi = targetDebi;
 
         if (t === 1) {
-            // İlk dakika: Statik seviyede, düşüm yok, debi 1.3x
+            // İlk dakika: Statik seviyede, düşüm yok, debi 1.3x (tam sayı)
             currentDrawdown = 0;
-            currentDebi = targetDebi * 1.3;
+            currentDebi = Math.round(targetDebi * 1.3);
         } 
         else if (t < 700) {
             // 700'e kadar logaritmik artış
             let logFactor = Math.log(t) / Math.log(700);
             currentDrawdown = maxDrawdown * logFactor;
-            currentDebi = (targetDebi * 1.3) - ((targetDebi * 0.3) * logFactor);
+            currentDebi = Math.round((targetDebi * 1.3) - ((targetDebi * 0.3) * logFactor));
         } 
         else {
-            // 700 ve sonrasında sabit (dinamik seviyeye ulaştı)
+            // 700 ve sonrasında sabit (dinamik seviyeye tam ulaştı)
             currentDrawdown = maxDrawdown;
-            currentDebi = targetDebi;
+            currentDebi = Math.round(targetDebi);
         }
 
+        // Ölçülen seviye tam sayı olacak
         let level = Math.round(statik + currentDrawdown);
-        let dusum = level - statik;
+        let dusum = level - Math.round(statik);
         let debiInt = Math.round(currentDebi);
 
         dataPoints.push({
@@ -476,9 +477,9 @@ function updateRow(index, field, value) {
     let val = parseFloat(value);
     if(isNaN(val)) return;
     
-    let statik = parseFloat(document.getElementById('p_statik').value) || 0;
+    let statik = Math.round(parseFloat(document.getElementById('p_statik').value) || 0);
     
-    // 1000. dakika kontrolü (güvenlik)
+    // 1000. dakika kontrolü (güvenlik - kilitli)
     if (dataPoints[index].t === 1000) return;
 
     if (field === 'level') {
@@ -603,10 +604,10 @@ function updateChart(t1, t2, d1, d2, deltaD) {
                 label: 'Düşüm Eğrisi',
                 data: plotData,
                 borderColor: '#000000',
-                borderWidth: 2,
+                borderWidth: 3, // Çizgi kalınlaştırıldı
                 pointBackgroundColor: '#000000',
-                pointRadius: 3,
-                pointHoverRadius: 5,
+                pointRadius: 4, // Noktalar büyütüldü
+                pointHoverRadius: 6,
                 fill: false,
                 tension: 0.1
             }]
@@ -615,19 +616,28 @@ function updateChart(t1, t2, d1, d2, deltaD) {
             responsive: true,
             maintainAspectRatio: false,
             animation: false,
+            layout: {
+                padding: 10 // Eksen yazılarının kesilmemesi için
+            },
             scales: {
                 x: {
                     type: 'logarithmic',
                     min: 1, max: 1000,
-                    title: { display: true, text: 'Zaman (dk)', font: { weight: 'bold' } },
+                    title: { display: true, text: 'Zaman (dk)', font: { size: 14, weight: 'bold' } },
                     grid: { color: '#e2e8f0', tickColor: '#94a3b8' },
-                    ticks: { maxRotation: 90, minRotation: 90 } // Dikey yazım
+                    ticks: { 
+                        font: { size: 12, weight: 'bold' },
+                        maxRotation: 90, minRotation: 90 
+                    } // Dikey yazım ve büyük font
                 },
                 y: {
                     type: 'linear',
                     min: 0, max: maxY,
-                    title: { display: true, text: 'Düşüm (m)', font: { weight: 'bold' } },
-                    grid: { color: '#cbd5e1' }
+                    title: { display: true, text: 'Düşüm (m)', font: { size: 14, weight: 'bold' } },
+                    grid: { color: '#cbd5e1' },
+                    ticks: {
+                        font: { size: 12, weight: 'bold' }
+                    }
                 }
             },
             plugins: {
@@ -641,7 +651,7 @@ function updateChart(t1, t2, d1, d2, deltaD) {
                             type: 'label', xValue: t2, yValue: d1 + (deltaD/2), xAdjust: 45,
                             content: `ΔD = ${Math.round(deltaD)}`,
                             backgroundColor: 'white', borderWidth: 1, borderColor: '#000',
-                            color: '#000', font: { size: 10, weight: 'bold' }
+                            color: '#000', font: { size: 12, weight: 'bold' } // Font büyütüldü
                         }
                     } : {}
                 }
@@ -696,10 +706,10 @@ function prepareAndPrint() {
     
     dataPoints.forEach(p => {
         let tr = `<tr>
-            <td class="border border-black py-0.5">${p.t}</td>
-            <td class="border border-black py-0.5">${p.level}</td>
-            <td class="border border-black py-0.5">${p.dusum}</td>
-            <td class="border border-black py-0.5">${p.debi}</td>
+            <td>${p.t}</td>
+            <td>${p.level}</td>
+            <td>${p.dusum}</td>
+            <td>${p.debi}</td>
         </tr>`;
         tbody.innerHTML += tr;
     });
@@ -710,7 +720,7 @@ function prepareAndPrint() {
     tempCanvas.width = canvas.width;
     tempCanvas.height = canvas.height;
     const tCtx = tempCanvas.getContext('2d');
-    tCtx.fillStyle = '#ffffff';
+    tCtx.fillStyle = '#ffffff'; // Arka plan kesin beyaz
     tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
     tCtx.drawImage(canvas, 0, 0);
     

@@ -61,7 +61,7 @@ body {
 /* Tablo çizgileri (Print) */
 .print-table td, .print-table th {
     border: 1px solid #000;
-    padding: 3px 5px; /* Satır aralıklarını biraz daha ferahlatmak için padding artırıldı */
+    padding: 3px 5px; 
 }
 </style>
 </head>
@@ -85,7 +85,6 @@ body {
             <input type="file" id="fileInput" accept=".geolog" class="hidden" onchange="handleFileUpload(event)">
             
             <div class="flex bg-slate-700/50 rounded-lg p-1 gap-1">
-                <!-- Yükle metni düzeltildi -->
                 <button onclick="document.getElementById('fileInput').click()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-semibold text-xs transition flex items-center gap-1.5" title="Yükle">
                     <i class="fa-solid fa-folder-open"></i> Yükle
                 </button>
@@ -94,7 +93,6 @@ body {
                 </button>
             </div>
             <div class="w-px h-6 bg-slate-600 mx-1 hidden md:block"></div>
-            <!-- Şablon Butonu Geri Geldi -->
             <button onclick="loadSampleData()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-lg font-semibold text-xs transition flex items-center gap-1.5 shadow">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> Şablon
             </button>
@@ -161,12 +159,10 @@ body {
                         <input type="number" id="p_statik" value="21" oninput="regenerateData()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <!-- Test Debisi yerine Debi yazıldı -->
                         <label class="block text-[10px] font-bold text-slate-500 mb-1">DEBİ - Q (lt/sn)</label>
                         <input type="number" id="p_debi" value="8" oninput="regenerateData()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <!-- Akifer Kalınlığı (e) eklendi -->
                         <label class="block text-[10px] font-bold text-slate-500 mb-1">AKİFER KALINLIĞI (e)</label>
                         <input type="number" id="p_kalinlik" value="120" oninput="calculateResults()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold outline-none focus:border-blue-500">
                     </div>
@@ -217,22 +213,21 @@ body {
                 </div>
 
                 <!-- Grafik Alanı -->
-                <div class="relative w-full h-[400px] bg-white border border-slate-200 rounded-lg p-2">
+                <div id="chartContainer" class="relative w-full h-[450px] bg-white border border-slate-200 rounded-lg p-2 transition-all duration-300">
                     <canvas id="drawdownChart"></canvas>
                 </div>
             </div>
 
-            <!-- Dinamik Veri Tablosu (Veri Ekle kaldırıldı) -->
+            <!-- Dinamik Veri Tablosu -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col flex-1">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
                     <div class="flex items-center gap-2">
                         <i class="fa-solid fa-table-list text-slate-600 text-lg"></i>
                         <h2 class="text-base font-bold text-slate-800">Sabit Seviyeli Düşüm Deneyi Verileri</h2>
                     </div>
-                    <!-- Veri ekle butonu kaldırıldı -->
                 </div>
 
-                <div class="overflow-y-auto max-h-[350px] border border-slate-200 rounded-lg bg-white">
+                <div class="overflow-y-auto max-h-[350px] bg-white border border-slate-200 rounded-lg">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
                             <tr class="bg-slate-100 border-b border-slate-300 sticky top-0 z-10">
@@ -290,13 +285,12 @@ body {
         </tbody>
     </table>
 
-    <!-- Alt Gövde: Tam Sayfaya Yayılacak Şekilde Yükseklikler Ayarlandı -->
-    <!-- Sol ve Sağ Sütun Yüzdeleri değiştirildi (28% ve 72%) -->
+    <!-- Alt Gövde: 100% yükseklik, iki sütun, alt hizalama -->
     <div class="flex gap-4 flex-1 w-full overflow-hidden">
         
-        <!-- SOL SÜTUN: Veri Tablosu ve İmza Alanı -->
-        <div class="w-[28%] flex flex-col justify-between h-full mt-0">
-            <!-- Dış çerçeve kaldırıldı, satır aralıkları CSS ile artırıldı -->
+        <!-- SOL SÜTUN: Veri Tablosu ve İmza Alanı (Genişlik %28) -->
+        <div class="w-[28%] flex flex-col h-full mt-0">
+            <!-- Dış çerçeve kaldırıldı, satır aralıkları py-1.5 ile açıldı -->
             <table class="w-full print-table text-[10px] text-center bg-white" id="pdf_data_table">
                 <thead>
                     <tr class="bg-gray-100">
@@ -311,23 +305,23 @@ body {
                 </tbody>
             </table>
             
-            <!-- İMZA ALANI (Alta Hizalı) -->
-            <!-- pb-0 vb. eklenerek gereksiz alt boşluklar kaldırıldı -->
-            <div class="border border-black p-3 flex flex-col items-center justify-end h-[25mm] shrink-0 mt-4 mb-0">
+            <!-- İMZA ALANI (Mt-auto ile en alta itilir, Sağdaki kutuyla hizalanır) -->
+            <div class="border border-black p-3 flex flex-col items-center justify-end h-[25mm] shrink-0 mt-auto bg-white">
                 <div class="w-4/5 border-b border-black mb-1.5"></div>
                 <div class="text-[11px] font-bold whitespace-nowrap">Sorumlu Mühendis</div>
                 <div id="pdf_imza_isim" class="text-[10px] mt-0.5 h-3"></div>
             </div>
         </div>
 
-        <!-- SAĞ SÜTUN: Grafik + Parametreler + Şık Formül Alanı -->
-        <div class="w-[72%] flex flex-col justify-between h-full mt-0">
+        <!-- SAĞ SÜTUN: Grafik + Parametreler + Hesaplama Kutusu (Genişlik %72) -->
+        <div class="w-[72%] flex flex-col h-full mt-0">
             
-            <!-- Grafik (Daha Geniş, Başlık arkası beyaz) -->
-            <div class="border border-black flex flex-col w-full h-[110mm] shrink-0 mb-4">
+            <!-- Grafik (Flex-1 ile dikeyde tüm boşluğu kaplar ve büyür) -->
+            <div class="border border-black flex flex-col w-full flex-1 mb-4 bg-white">
                 <div class="text-center font-bold border-b border-black py-1 text-[12px] uppercase">Düşüm - Zaman Grafiği</div>
-                <div class="flex-1 p-2 flex justify-center items-center overflow-hidden relative">
-                    <img id="pdf_chart_img" src="" class="w-full h-full object-contain absolute inset-0 p-2">
+                <div class="flex-1 p-0 flex justify-center items-center overflow-hidden relative">
+                    <!-- object-fill ile tam yayılma sağlanır -->
+                    <img id="pdf_chart_img" src="" class="w-full h-full object-fill absolute inset-0">
                 </div>
             </div>
 
@@ -349,30 +343,25 @@ body {
                 </tbody>
             </table>
 
-            <!-- Şık ve Anlaşılır Formül Alanı (Alta kilitlenecek) -->
-            <!-- Renkler kaldırıldı, sadece K kalın -->
-            <div class="border border-black p-4 flex flex-col justify-center gap-2 flex-1 mb-0">
-                <div class="text-center font-bold text-[12px] uppercase tracking-widest border-b border-gray-400 pb-1 mb-1">Hidrolik Parametre Hesaplamaları</div>
+            <!-- Şık ve Ortalı Formül Alanı (Sabit Yükseklik, mt-auto ile alta kilitli) -->
+            <div class="border border-black p-3 flex flex-col justify-center gap-2 text-[11px] font-mono leading-relaxed text-center h-[55mm] shrink-0 mt-auto bg-white">
+                <div>
+                    <strong>Düşüm Farkı (Δd):</strong><br>
+                    <span id="pdf_eq_d2"></span> - <span id="pdf_eq_d1"></span> = <span id="pdf_eq_dd"></span> m
+                </div>
                 
-                <div class="text-[11px] font-mono leading-relaxed px-2 flex flex-col justify-around h-full">
-                    <div>
-                        <strong>Düşüm Farkı (Δd):</strong> 
-                        <span id="pdf_eq_d2"></span> - <span id="pdf_eq_d1"></span> = <span id="pdf_eq_dd"></span> m
-                    </div>
-                    
-                    <div class="mt-1">
-                        <strong>İletim (T):</strong><br>
-                        T = (0,183 &times; Q) / Δd<br>
-                        T = (0,183 &times; <span id="pdf_eq_Q"></span>) / <span id="pdf_eq_dd_div"></span><br>
-                        T = <span id="pdf_res_T_msn"></span> m²/sn = <span id="pdf_res_T_mgun"></span> m²/gün
-                    </div>
+                <div>
+                    <strong>İletim (T):</strong><br>
+                    T = (0,183 &times; Q) / Δd<br>
+                    T = (0,183 &times; <span id="pdf_eq_Q"></span>) / <span id="pdf_eq_dd_div"></span><br>
+                    T = <span id="pdf_res_T_msn"></span> m²/sn = <span id="pdf_res_T_mgun"></span> m²/gün
+                </div>
 
-                    <div class="mt-1 font-bold">
-                        Hidrolik İletkenlik (K):<br>
-                        K = T / e<br>
-                        K = <span id="pdf_eq_T"></span> / <span id="pdf_eq_e"></span><br>
-                        K = <span id="pdf_res_K"></span> m/sn
-                    </div>
+                <div>
+                    <strong class="text-[12px]">Hidrolik İletkenlik (K):</strong><br>
+                    K = T / e<br>
+                    K = <span id="pdf_eq_T"></span> / <span id="pdf_eq_e"></span><br>
+                    K = <strong class="text-[12px]"><span id="pdf_res_K"></span> m/sn</strong>
                 </div>
             </div>
         </div>
@@ -416,13 +405,11 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-// Data Array Management
 function regenerateData() {
-    let statik = parseFloat(document.getElementById('p_statik').value) || 0;
-    let targetDebi = parseFloat(document.getElementById('p_debi').value) || 0;
+    let statik = parseInt(document.getElementById('p_statik').value) || 0;
+    let targetDebi = parseInt(document.getElementById('p_debi').value) || 0;
     
-    let p_dinamik = parseFloat(document.getElementById('p_dinamik').value);
-    // Dinamik seviye manuel girilmediyse veya küçükse statik+10 varsayalım
+    let p_dinamik = parseInt(document.getElementById('p_dinamik').value);
     let dinamik = isNaN(p_dinamik) ? statik + 10 : p_dinamik;
     if (dinamik < statik) dinamik = statik;
 
@@ -445,9 +432,9 @@ function regenerateData() {
             currentDebi = Math.ceil((targetDebi * 1.3) - ((targetDebi * 0.3) * logFactor));
         } 
         else {
-            // 600 ve sonrasında sabit (dinamik seviyeye tam ulaştı)
+            // 600 ve sonrasında düşüm tamamen maksimumda sabit, debi ana hedefe sabit
             currentDrawdown = maxDrawdown;
-            currentDebi = Math.round(targetDebi);
+            currentDebi = targetDebi;
         }
 
         // Ölçülen seviye tam sayı olacak
@@ -474,10 +461,8 @@ function renderTable() {
         let tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50 transition border-b border-slate-100";
         
-        // Zaman sadece div ile yazıldı (düzenlenemez)
-        // 1000. dakika tamamen readonly yapıldı
         tr.innerHTML = `
-            <td class="p-1 text-center text-xs py-1 text-slate-500 font-bold">
+            <td class="p-1 text-center text-xs py-1.5 text-slate-500 font-bold">
                 ${p.t}
             </td>
             <td class="p-1">
@@ -518,7 +503,6 @@ function getDrawdownAt(t) {
     let exact = dataPoints.find(p => p.t === t);
     if (exact) return exact.dusum;
     
-    // Fallback if exactly not found (shouldn't happen with strict times, but safe)
     let sorted = [...dataPoints].sort((a,b) => a.t - b.t);
     if(t <= sorted[0].t) return sorted[0].dusum;
     if(t >= sorted[sorted.length-1].t) return sorted[sorted.length-1].dusum;
@@ -554,8 +538,8 @@ function formatScientificHTML(num) {
 function calculateResults() {
     renderTable(); 
     
-    let Q = parseFloat(document.getElementById('p_debi').value) || 0; // lt/sn
-    let e = parseFloat(document.getElementById('p_kalinlik').value) || 1; // m
+    let Q = parseFloat(document.getElementById('p_debi').value) || 0; 
+    let e = parseFloat(document.getElementById('p_kalinlik').value) || 1; 
     
     let t1 = parseFloat(document.getElementById('p_t1').value) || 10;
     let t2 = parseFloat(document.getElementById('p_t2').value) || 100;
@@ -575,7 +559,6 @@ function calculateResults() {
         K_msn = T_msn / e;
     }
     
-    // Siyah renk, bold
     document.getElementById('ui_res_dd').innerText = deltaD > 0 ? deltaD.toFixed(2) : "0.00";
     document.getElementById('ui_res_T').innerHTML = formatScientificHTML(T_msn);
     document.getElementById('ui_res_K').innerHTML = formatScientificHTML(K_msn);
@@ -595,7 +578,8 @@ function updateChart(t1, t2, d1, d2, deltaD) {
     let maxY = 35; 
     if (plotData.length > 0) {
         let dataMax = Math.max(...plotData.map(p => p.y));
-        maxY = Math.ceil((dataMax + 5) / 5) * 5; 
+        // Üst boşluğu azalttık (Sadece %5 ekstra boşluk)
+        maxY = dataMax > 0 ? Math.ceil(dataMax + (dataMax * 0.05)) : 35; 
     }
 
     if (chartInstance) {
@@ -609,10 +593,10 @@ function updateChart(t1, t2, d1, d2, deltaD) {
                 label: 'Düşüm Eğrisi',
                 data: plotData,
                 borderColor: '#000000',
-                borderWidth: 2.5, // Daha belirgin çizgi
+                borderWidth: 3, 
                 pointBackgroundColor: '#000000',
-                pointRadius: 4, // Daha büyük noktalar
-                pointHoverRadius: 6,
+                pointRadius: 4.5, 
+                pointHoverRadius: 7,
                 fill: false,
                 tension: 0.1 
             }]
@@ -622,18 +606,26 @@ function updateChart(t1, t2, d1, d2, deltaD) {
             maintainAspectRatio: false,
             animation: false,
             layout: {
-                padding: { left: 10, right: 20, top: 10, bottom: 10 } // İç boşluk artırıldı
+                // İç boşlukları minimuma indirdik ki çerçeveyi iyi doldursun
+                padding: { left: 5, right: 15, top: 10, bottom: 5 } 
             },
             scales: {
                 x: {
                     type: 'logarithmic',
                     min: 1,
                     max: 1000,
-                    title: { display: true, text: 'Zaman (dk)', font: { weight: 'bold', size: 14 } },
+                    title: { display: true, text: 'Zaman (dk)', font: { weight: 'bold', size: 16 } },
                     ticks: { 
-                        font: { size: 12 },
-                        maxRotation: 90, // Yazıları dikey yap
-                        minRotation: 90
+                        font: { size: 14, weight: 'bold' },
+                        // Sadece istenen değerleri göster
+                        callback: function(value) {
+                            if (value === 1 || value === 10 || value === 100 || value === 1000) {
+                                return value;
+                            }
+                            return null;
+                        },
+                        maxRotation: 0, 
+                        minRotation: 0
                     },
                     grid: { color: '#e2e8f0', tickColor: '#94a3b8' }
                 },
@@ -641,8 +633,8 @@ function updateChart(t1, t2, d1, d2, deltaD) {
                     type: 'linear',
                     min: 0,
                     max: maxY,
-                    title: { display: true, text: 'Düşüm (m)', font: { weight: 'bold', size: 14 } },
-                    ticks: { font: { size: 12 } },
+                    title: { display: true, text: 'Düşüm (m)', font: { weight: 'bold', size: 16 } },
+                    ticks: { font: { size: 14 } },
                     grid: { color: '#cbd5e1' }
                 }
             },
@@ -666,12 +658,12 @@ function updateChart(t1, t2, d1, d2, deltaD) {
                             type: 'label',
                             xValue: t2,
                             yValue: d1 + (deltaD/2),
-                            xAdjust: 45,
+                            xAdjust: 50,
                             content: `ΔD = ${d2.toFixed(0)} - ${d1.toFixed(0)} = ${deltaD.toFixed(0)}`,
                             backgroundColor: 'white',
                             borderWidth: 1, borderColor: '#e5e7eb',
                             color: 'red',
-                            font: { size: 12, weight: 'bold' } // Yazı boyutu büyütüldü
+                            font: { size: 14, weight: 'bold' } 
                         }
                     } : {}
                 }
@@ -690,17 +682,17 @@ function prepareAndPrint() {
     
     let muhendis = document.getElementById('p_muhendis').value || "-";
     document.getElementById('pdf_muhendis').innerText = muhendis;
-    document.getElementById('pdf_imza_isim').innerText = muhendis; // İmza kutusuna isim eklendi
+    document.getElementById('pdf_imza_isim').innerText = muhendis; 
     
     document.getElementById('pdf_dsi').innerText = document.getElementById('p_dsi').value || "-";
     document.getElementById('pdf_tarih_val').innerText = document.getElementById('p_tarih').value || "-";
     
     // Parametreler
-    document.getElementById('pdf_statik').innerText = (document.getElementById('p_statik').value || "0") + " m";
+    let statik = parseFloat(document.getElementById('p_statik').value) || 0;
+    document.getElementById('pdf_statik').innerText = statik + " m";
     
     let maxDrawdown = 0;
     dataPoints.forEach(p => { if(p.dusum > maxDrawdown) maxDrawdown = p.dusum; });
-    let statik = parseFloat(document.getElementById('p_statik').value) || 0;
     
     let manualDinamik = document.getElementById('p_dinamik').value;
     document.getElementById('pdf_dinamik').innerText = manualDinamik ? manualDinamik + " m" : Math.round(statik + maxDrawdown) + " m";
@@ -724,7 +716,6 @@ function prepareAndPrint() {
     
     document.getElementById('pdf_res_T_msn').innerHTML = document.getElementById('ui_res_T').innerHTML;
     
-    // T_mgun manuel
     let T_msn = (0.183 * (Q/1000)) / (deltaD > 0 ? deltaD : 1);
     document.getElementById('pdf_res_T_mgun').innerText = (T_msn * 86400).toFixed(3);
     
@@ -738,34 +729,47 @@ function prepareAndPrint() {
     
     dataPoints.forEach(p => {
         let tr = `<tr>
-            <td class="py-1">${p.t}</td>
-            <td class="py-1">${p.level}</td>
-            <td class="py-1">${p.dusum}</td>
-            <td class="py-1">${p.debi}</td>
+            <td class="py-1.5">${p.t}</td>
+            <td class="py-1.5">${p.level}</td>
+            <td class="py-1.5">${p.dusum}</td>
+            <td class="py-1.5">${p.debi}</td>
         </tr>`;
         tbody.innerHTML += tr;
     });
 
-    // Chart to Image
-    const canvas = document.getElementById('drawdownChart');
-    const pdfImg = document.getElementById('pdf_chart_img');
+    // --- KARE VE MÜKEMMEL GRAFİK KALİTESİ İÇİN OTO-BOYUTLANDIRMA MANTIĞI ---
+    const chartDiv = document.getElementById('chartContainer');
+    const originalWidth = chartDiv.style.width;
     
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
-    const tCtx = tempCanvas.getContext('2d');
-    tCtx.fillStyle = '#ffffff';
-    tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-    tCtx.drawImage(canvas, 0, 0);
-    
-    pdfImg.src = tempCanvas.toDataURL('image/png', 1.0);
-    
+    // Grafiği zorla kare-vari bir forma sokuyoruz
+    chartDiv.style.width = '600px'; 
+    chartInstance.resize();
+
     setTimeout(() => {
-        const originalTitle = document.title;
-        document.title = "Sabit_Seviyeli_Dusum_Raporu";
-        window.print();
-        document.title = originalTitle;
-    }, 500);
+        const canvas = document.getElementById('drawdownChart');
+        const pdfImg = document.getElementById('pdf_chart_img');
+        
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        const tCtx = tempCanvas.getContext('2d');
+        tCtx.fillStyle = '#ffffff';
+        tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+        tCtx.drawImage(canvas, 0, 0);
+        
+        pdfImg.src = tempCanvas.toDataURL('image/png', 1.0);
+        
+        // Formu eski haline getiriyoruz
+        chartDiv.style.width = originalWidth;
+        chartInstance.resize();
+        
+        setTimeout(() => {
+            const originalTitle = document.title;
+            document.title = "Dusum_Zaman_Raporu";
+            window.print();
+            document.title = originalTitle;
+        }, 300); // UI'ın yerine oturması için bekle
+    }, 150); // Chart.js'in resize animasyonu için bekle
 }
 
 function loadSampleData() {
@@ -820,11 +824,9 @@ function downloadProject() {
     const a = document.createElement('a');
     a.href = url;
     
-    // Dosya Adı Oluşturma: ilce_mahalle_ada_parsel_dusum.geolog
     let adres = document.getElementById('p_adres').value || "";
     let adaParsel = document.getElementById('p_ada_parsel').value || "";
     
-    // Sadece harf, rakam tut, boşlukları ve özel karakterleri alt çizgi yap
     let safeAdres = adres.replace(/[^a-zA-Z0-9ığüşöçİĞÜŞÖÇ]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '').toLowerCase();
     let safeAda = adaParsel.replace(/[^a-zA-Z0-9ığüşöçİĞÜŞÖÇ]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '').toLowerCase();
     
@@ -872,7 +874,6 @@ function handleFileUpload(event) {
     reader.readAsText(file);
 }
 
-// İlk açılış
 window.onload = function() {
     regenerateData();
 }

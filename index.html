@@ -79,7 +79,7 @@ body {
             </div>
             <div>
                 <h1 class="text-xl md:text-2xl font-bold tracking-tight">GeoLog Pro</h1>
-                <p class="text-sm text-blue-200">Düşüm - Zaman Analizi</p>
+                <p class="text-xs text-blue-200">Düşüm - Zaman Analizi</p>
             </div>
         </div>
         
@@ -88,18 +88,18 @@ body {
             <input type="file" id="fileInput" accept=".geolog" class="hidden" onchange="handleFileUpload(event)">
             
             <div class="flex bg-slate-700/50 rounded-lg p-1 gap-1">
-                <button onclick="document.getElementById('fileInput').click()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-semibold text-sm transition flex items-center gap-1.5" title="Yükle">
+                <button onclick="document.getElementById('fileInput').click()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-semibold text-xs transition flex items-center gap-1.5" title="Yükle">
                     <i class="fa-solid fa-folder-open"></i> Yükle
                 </button>
-                <button onclick="downloadProject()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-semibold text-sm transition flex items-center gap-1.5" title="İndir">
+                <button onclick="downloadProject()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-semibold text-xs transition flex items-center gap-1.5" title="İndir">
                     <i class="fa-solid fa-download"></i> İndir
                 </button>
             </div>
             <div class="w-px h-6 bg-slate-600 mx-1 hidden md:block"></div>
-            <button onclick="loadSampleData()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-lg font-semibold text-sm transition flex items-center gap-1.5 shadow">
+            <button onclick="loadSampleData()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-lg font-semibold text-xs transition flex items-center gap-1.5 shadow">
                 <i class="fa-solid fa-database"></i> Şablon
             </button>
-            <button onclick="clearAllData()" class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-2 rounded-lg font-semibold text-sm transition flex items-center gap-1.5 shadow">
+            <button onclick="clearAllData()" class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-2 rounded-lg font-semibold text-xs transition flex items-center gap-1.5 shadow">
                 <i class="fa-solid fa-eraser"></i> Sıfırla
             </button>
         </div>
@@ -115,34 +115,34 @@ body {
             <!-- Künye Bilgileri -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
                 <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
-                    <i class="fa-solid fa-circle-info text-slate-600 text-xl"></i>
-                    <h2 class="text-lg font-bold text-slate-800">Proje Künyesi</h2>
+                    <i class="fa-solid fa-circle-info text-slate-600 text-lg"></i>
+                    <h2 class="text-base font-bold text-slate-800">Proje Künyesi</h2>
                 </div>
-                <div class="space-y-4">
+                <div class="space-y-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">ADRES</label>
-                        <input type="text" id="p_adres" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm outline-none focus:border-blue-500" placeholder="Örn: Bursa / Nilüfer">
+                        <input type="text" id="p_adres" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm outline-none focus:border-blue-500" placeholder="Örn: Bursa / Nilüfer">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">ADA / PARSEL</label>
-                        <input type="text" id="p_ada_parsel" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm outline-none focus:border-blue-500" placeholder="102/13">
+                        <input type="text" id="p_ada_parsel" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm outline-none focus:border-blue-500" placeholder="102/13">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">KUYU SAHİBİ</label>
-                        <input type="text" id="p_sahip" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm outline-none focus:border-blue-500">
+                        <input type="text" id="p_sahip" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm outline-none focus:border-blue-500">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">SORUMLU MÜHENDİS</label>
-                        <input type="text" id="p_muhendis" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm outline-none focus:border-blue-500">
+                        <input type="text" id="p_muhendis" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm outline-none focus:border-blue-500">
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">DSİ BELGE NO</label>
-                            <input type="text" id="p_dsi" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm outline-none focus:border-blue-500">
+                            <input type="text" id="p_dsi" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm outline-none focus:border-blue-500">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">TARİH</label>
-                            <input type="text" id="p_tarih" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm outline-none focus:border-blue-500">
+                            <input type="text" id="p_tarih" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm outline-none focus:border-blue-500">
                         </div>
                     </div>
                 </div>
@@ -152,39 +152,39 @@ body {
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
                     <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-water text-blue-600 text-xl"></i>
-                        <h2 class="text-lg font-bold text-slate-800">Akifer Parametreleri</h2>
+                        <i class="fa-solid fa-water text-blue-600 text-lg"></i>
+                        <h2 class="text-base font-bold text-slate-800">Akifer Parametreleri</h2>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4 mb-5">
+                <div class="grid grid-cols-2 gap-3 mb-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">STATİK SEVİYE (m)</label>
-                        <input type="number" step="1" id="p_statik" value="21" onchange="generateData()" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm font-bold outline-none focus:border-blue-500">
+                        <input type="number" step="1" id="p_statik" value="21" onchange="generateData()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm font-bold outline-none focus:border-blue-500">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">DEBİ - Q (lt/sn)</label>
-                        <input type="number" step="1" id="p_debi" value="8" onchange="generateData()" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm font-bold outline-none focus:border-blue-500">
+                        <input type="number" step="1" id="p_debi" value="8" onchange="generateData()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm font-bold outline-none focus:border-blue-500">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">AKİFER KALINLIĞI (e)</label>
-                        <input type="number" step="1" id="p_kalinlik" value="120" oninput="calculateResults()" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm font-bold outline-none focus:border-blue-500">
+                        <input type="number" step="1" id="p_kalinlik" value="120" oninput="calculateResults()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm font-bold outline-none focus:border-blue-500">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">DİNAMİK SEVİYE (m)</label>
-                        <input type="number" step="1" id="p_dinamik" value="47" onchange="generateData()" placeholder="Zorunlu" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm font-bold outline-none focus:border-blue-500">
+                        <input type="number" step="1" id="p_dinamik" value="47" onchange="generateData()" placeholder="Zorunlu" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm font-bold outline-none focus:border-blue-500">
                     </div>
                 </div>
 
-                <div class="p-4 bg-blue-50/50 rounded-lg border border-blue-100">
-                    <label class="block text-xs font-bold text-blue-800 mb-3">GRAFİK ANALİZ ARALIĞI</label>
-                    <div class="grid grid-cols-2 gap-3">
+                <div class="p-3 bg-blue-50/50 rounded-lg border border-blue-100">
+                    <label class="block text-xs font-bold text-blue-800 mb-2">GRAFİK ANALİZ ARALIĞI</label>
+                    <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <span class="text-xs font-bold text-slate-500 block mb-1">Başlangıç Zamanı (dk)</span>
-                            <input type="number" id="p_t1" value="10" oninput="calculateResults()" class="w-full bg-white border border-blue-200 rounded px-3 py-2 text-sm">
+                            <span class="text-[10px] font-bold text-slate-500 block">Başlangıç Zamanı (dk)</span>
+                            <input type="number" id="p_t1" value="10" oninput="calculateResults()" class="w-full bg-white border border-blue-200 rounded px-2 py-1 text-sm">
                         </div>
                         <div>
-                            <span class="text-xs font-bold text-slate-500 block mb-1">Bitiş Zamanı (dk)</span>
-                            <input type="number" id="p_t2" value="100" oninput="calculateResults()" class="w-full bg-white border border-blue-200 rounded px-3 py-2 text-sm">
+                            <span class="text-[10px] font-bold text-slate-500 block">Bitiş Zamanı (dk)</span>
+                            <input type="number" id="p_t2" value="100" oninput="calculateResults()" class="w-full bg-white border border-blue-200 rounded px-2 py-1 text-sm">
                         </div>
                     </div>
                 </div>
@@ -200,15 +200,15 @@ body {
                 <div class="grid grid-cols-3 gap-4 mb-4 pb-4 border-b border-slate-100">
                     <div class="bg-slate-50 rounded-lg p-3 border border-slate-200 flex flex-col justify-center items-center">
                         <span class="text-xs font-bold text-slate-500 uppercase">Düşüm Farkı (Δd)</span>
-                        <span class="text-2xl text-slate-800 font-mono mt-1" id="ui_res_dd">0</span>
+                        <span class="text-xl text-slate-800 font-mono mt-1" id="ui_res_dd">0</span>
                     </div>
                     <div class="bg-slate-50 rounded-lg p-3 border border-slate-200 flex flex-col justify-center items-center">
                         <span class="text-xs font-bold text-slate-500 uppercase">İletim (T) m²/sn</span>
-                        <span class="text-2xl text-slate-800 font-mono mt-1" id="ui_res_T">0.00</span>
+                        <span class="text-xl text-slate-800 font-mono mt-1" id="ui_res_T">0.00</span>
                     </div>
                     <div class="bg-slate-50 rounded-lg p-3 border border-slate-200 flex flex-col justify-center items-center">
                         <span class="text-xs font-bold text-slate-500 uppercase">Hid. İletkenlik (K) m/sn</span>
-                        <span class="text-2xl font-bold text-slate-800 font-mono mt-1" id="ui_res_K">0.00</span>
+                        <span class="text-xl font-bold text-slate-800 font-mono mt-1" id="ui_res_K">0.00</span>
                     </div>
                 </div>
 
@@ -222,8 +222,8 @@ body {
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col flex-1">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
                     <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-table-list text-slate-600 text-xl"></i>
-                        <h2 class="text-lg font-bold text-slate-800">Sabit Seviyeli Düşüm Deneyi Verileri</h2>
+                        <i class="fa-solid fa-table-list text-slate-600 text-lg"></i>
+                        <h2 class="text-base font-bold text-slate-800">Sabit Seviyeli Düşüm Deneyi Verileri</h2>
                     </div>
                 </div>
 
@@ -231,10 +231,10 @@ body {
                     <table class="w-full text-left text-sm border-collapse">
                         <thead>
                             <tr class="bg-slate-100 border-b border-slate-300 sticky top-0 z-10">
-                                <th class="p-3 font-bold text-slate-700 w-1/4 text-center">Zaman (dk)</th>
-                                <th class="p-3 font-bold text-slate-700 w-1/4 text-center">Ölçülen Seviye (m)</th>
-                                <th class="p-3 font-bold text-slate-700 w-1/4 text-center">Düşüm (m)</th>
-                                <th class="p-3 font-bold text-slate-700 w-1/4 text-center">Debi (lt/sn)</th>
+                                <th class="p-2 font-bold text-slate-700 w-1/4 text-center">Zaman (dk)</th>
+                                <th class="p-2 font-bold text-slate-700 w-1/4 text-center">Ölçülen Seviye (m)</th>
+                                <th class="p-2 font-bold text-slate-700 w-1/4 text-center">Düşüm (m)</th>
+                                <th class="p-2 font-bold text-slate-700 w-1/4 text-center">Debi (lt/sn)</th>
                             </tr>
                         </thead>
                         <tbody id="dataTableBody" class="divide-y divide-slate-100">
@@ -260,8 +260,8 @@ body {
     <!-- Rapor Ana Başlığı -->
     <div class="text-center font-bold text-[16px] mb-3 uppercase tracking-wider">SABİT SEVİYELİ DÜŞÜM DENEYİ</div>
 
-    <!-- 1. KÜNYE TABLOSU -->
-    <table class="w-full print-table text-[11px] mb-4 font-bold bg-white text-left">
+    <!-- 1. KÜNYE TABLOSU (Altına boşluk eklendi mb-8) -->
+    <table class="w-full print-table text-[11px] mb-8 font-bold bg-white text-left">
         <tbody>
             <tr>
                 <td class="w-[15%]">Adres</td>
@@ -284,11 +284,11 @@ body {
         </tbody>
     </table>
 
-    <!-- Alt Gövde: Özel Esnek Izgara Tasarımı -->
-    <div class="flex gap-4 w-full h-[200mm]">
+    <!-- Alt Gövde -->
+    <div class="flex gap-4 flex-1 w-full overflow-hidden">
         
-        <!-- SOL SÜTUN: Veri Tablosu ve İmza Alanı -->
-        <div class="w-[35%] flex flex-col justify-between h-full">
+        <!-- SOL SÜTUN: Veri Tablosu ve İmza Alanı (Genişlik %28) -->
+        <div class="w-[28%] flex flex-col h-full gap-2 mt-0">
             <!-- Tablo -->
             <table class="w-full print-table text-[10px] text-center bg-white" id="pdf_data_table">
                 <thead>
@@ -304,62 +304,65 @@ body {
                 </tbody>
             </table>
             
-            <!-- İMZA ALANI (En alta yaslı, hesaplama kutusuyla aynı hizada) -->
-            <div class="border border-black p-3 flex flex-col items-center justify-end h-[25mm] shrink-0 mt-auto">
-                <div class="w-2/3 border-b border-black mb-1.5"></div>
-                <div class="text-[11px] font-bold whitespace-nowrap">Sorumlu Mühendis</div>
-                <div id="pdf_imza_isim" class="text-[10px] mt-0.5 h-3"></div>
+            <!-- İMZA ALANI (Çizgisiz, kalın ünvan, mt-auto ile tabana hizalı) -->
+            <div class="border border-black p-3 flex flex-col items-center justify-center h-[25mm] shrink-0 mt-auto">
+                <div class="text-[11px] font-bold whitespace-nowrap text-center">Sorumlu Mühendis</div>
+                <div id="pdf_imza_isim" class="text-[11px] mt-1 text-center font-normal"></div>
             </div>
         </div>
 
-        <!-- SAĞ SÜTUN: Grafik + Parametreler + Hesaplama Alanı -->
-        <div class="w-[65%] flex flex-col justify-between h-full">
+        <!-- SAĞ SÜTUN: Grafik + Parametreler + Hesaplama Alanı (Genişlik %72) -->
+        <div class="w-[72%] flex flex-col gap-4 h-full mt-0">
             
             <!-- Grafik -->
-            <div class="border border-black flex flex-col w-full h-[105mm] shrink-0">
+            <div class="border border-black flex flex-col w-full h-[100mm] shrink-0">
                 <div class="text-center font-bold border-b border-black py-1 text-[12px] uppercase">Düşüm - Zaman Grafiği</div>
                 <div class="flex-1 p-2 flex justify-center items-center overflow-hidden relative">
                     <img id="pdf_chart_img" src="" class="w-full h-full object-contain absolute inset-0 p-2">
                 </div>
             </div>
 
-            <!-- Parametreler Tablosu -->
-            <table class="w-full print-table text-[11px] font-bold bg-white text-left my-2">
+            <!-- Parametreler Tablosu (Sola hizalı) -->
+            <table class="w-full print-table text-[11px] font-bold bg-white text-left">
                 <tbody>
                     <tr>
-                        <td class="w-[50%] pl-2">Statik Seviye</td>
-                        <td id="pdf_statik" class="font-normal text-center">-</td>
-                        <td class="w-[25%] pl-2">Akifer Kalınlığı (e)</td>
-                        <td id="pdf_kalinlik" class="font-normal text-center">-</td>
+                        <td class="w-[30%] pl-2">Statik Seviye</td>
+                        <td id="pdf_statik" class="font-normal w-[20%] pl-2">-</td>
+                        <td class="w-[30%] pl-2">Akifer Kalınlığı (e)</td>
+                        <td id="pdf_kalinlik" class="font-normal w-[20%] pl-2">-</td>
                     </tr>
                     <tr>
                         <td class="pl-2">Dinamik Seviye</td>
-                        <td id="pdf_dinamik" class="font-normal text-center">-</td>
+                        <td id="pdf_dinamik" class="font-normal pl-2">-</td>
                         <td class="pl-2">Debi</td>
-                        <td id="pdf_debi" class="font-normal text-center">-</td>
+                        <td id="pdf_debi" class="font-normal pl-2">-</td>
                     </tr>
                 </tbody>
             </table>
 
-            <!-- Hesaplama Alanı (Merkezlenmiş, Küçültülmüş, İmza Kutusunun alt çizgisiyle tam hizalı) -->
-            <div class="border border-black p-2 flex flex-col items-center justify-center gap-2 h-[45mm] shrink-0 mt-auto">
-                <div class="text-center font-bold text-xs uppercase tracking-widest border-b border-gray-300 pb-1 mb-1 w-[80%]">Hidrolik Parametre Hesaplamaları</div>
+            <!-- Hesaplama Alanı (Önceki stile geri dönüldü, K kalın, mt-auto ile imza hizasına kilitlendi) -->
+            <div class="border border-black p-4 flex flex-col justify-center gap-2 h-[45mm] shrink-0 mt-auto mb-0">
+                <div class="text-center font-bold text-xs uppercase tracking-widest border-b border-gray-300 pb-1 mb-1">Hidrolik Parametre Hesaplamaları</div>
                 
-                <div class="text-[11px] leading-relaxed text-black text-center w-full">
-                    <span class="font-bold">Düşüm Farkı (Δd) : </span>
-                    <span class="font-mono ml-1">Δd = <span id="pdf_eq_d2"></span> - <span id="pdf_eq_d1"></span> = <span id="pdf_eq_dd"></span> m</span>
+                <div class="text-[11px] leading-relaxed text-black">
+                    <span class="inline-block w-40 font-bold">Düşüm Farkı (Δd) :</span>
+                    <span class="font-mono">Δd = <span id="pdf_eq_d2"></span> - <span id="pdf_eq_d1"></span> = <span id="pdf_eq_dd"></span> m</span>
                 </div>
                 
-                <div class="text-[11px] leading-relaxed text-black text-center w-full mt-1">
-                    <span class="font-bold">İletilebilirlik (T) : </span>
-                    <span class="font-mono ml-1">T = (0.183 &times; Q) / Δd</span><br>
+                <div class="text-[11px] leading-relaxed mt-1 text-black">
+                    <span class="inline-block w-40 font-bold">İletilebilirlik (T) :</span>
+                    <span class="font-mono">T = (0.183 &times; Q) / Δd</span>
+                </div>
+                <div class="text-[11px] leading-relaxed pl-40 text-black">
                     <span class="font-mono">T = (0.183 &times; <span id="pdf_eq_Q"></span>) / <span id="pdf_eq_dd_div"></span></span><br>
                     <span class="font-mono">T = <span id="pdf_res_T_msn"></span> m²/sn &nbsp;&nbsp;&nbsp;(&nbsp;<span id="pdf_res_T_mgun"></span> m²/gün&nbsp;)</span>
                 </div>
 
-                <div class="text-[11px] leading-relaxed pt-2 border-t border-gray-200 text-black text-center w-[80%] mt-1">
-                    <span class="font-bold">Hidrolik İletkenlik (K) : </span>
-                    <span class="font-mono ml-1">K = T / e</span><br>
+                <div class="text-[11px] leading-relaxed mt-2 pt-2 border-t border-gray-300 text-black">
+                    <span class="inline-block w-40 font-bold">Hidrolik İletkenlik (K) :</span>
+                    <span class="font-mono">K = T / e</span>
+                </div>
+                <div class="text-[11px] leading-relaxed pl-40 text-black">
                     <span class="font-mono">K = <span id="pdf_eq_T"></span> / <span id="pdf_eq_e"></span></span><br>
                     <span class="font-mono font-bold text-[13px] tracking-wide mt-1 inline-block">K = <span id="pdf_res_K"></span> m/sn</span>
                 </div>
@@ -379,13 +382,11 @@ body {
 let chartInstance = null;
 let dataPoints = [];
 
-// Input IDs to save/load project
 const inputIdsToSave = [
     'p_adres', 'p_ada_parsel', 'p_sahip', 'p_muhendis', 'p_dsi', 'p_tarih',
     'p_statik', 'p_debi', 'p_kalinlik', 'p_dinamik', 'p_t1', 'p_t2'
 ];
 
-// Zaman adımları (1000'e kadar)
 const timeSteps = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
     20, 30, 40, 50, 60, 70, 80, 90, 100,
@@ -418,10 +419,8 @@ function generateData() {
     let dinamik = parseFloat(document.getElementById('p_dinamik').value);
     let targetDebi = parseFloat(document.getElementById('p_debi').value);
     
-    // Geçersiz değerler varsa işlemi durdur
     if (isNaN(statik) || isNaN(targetDebi)) return;
     
-    // Eğer dinamik girilmediyse, statikten biraz fazla bir şey uyduralım
     if (isNaN(dinamik)) {
         dinamik = statik + 20; 
         document.getElementById('p_dinamik').value = dinamik;
@@ -435,23 +434,19 @@ function generateData() {
         let currentDebi = targetDebi;
 
         if (t === 1) {
-            // İlk dakika: Statik seviyede, düşüm yok, debi 1.3x (tam sayı)
             currentDrawdown = 0;
-            currentDebi = Math.round(targetDebi * 1.3);
+            currentDebi = Math.ceil(targetDebi * 1.3);
         } 
-        else if (t < 700) {
-            // 700'e kadar logaritmik artış
-            let logFactor = Math.log(t) / Math.log(700);
+        else if (t < 600) {
+            let logFactor = Math.log(t) / Math.log(600);
             currentDrawdown = maxDrawdown * logFactor;
-            currentDebi = Math.round((targetDebi * 1.3) - ((targetDebi * 0.3) * logFactor));
+            currentDebi = Math.ceil((targetDebi * 1.3) - ((targetDebi * 0.3) * logFactor));
         } 
         else {
-            // 700 ve sonrasında sabit (dinamik seviyeye tam ulaştı)
             currentDrawdown = maxDrawdown;
             currentDebi = Math.round(targetDebi);
         }
 
-        // Ölçülen seviye tam sayı olacak
         let level = Math.round(statik + currentDrawdown);
         let dusum = level - Math.round(statik);
         let debiInt = Math.round(currentDebi);
@@ -473,7 +468,6 @@ function updateRow(index, field, value) {
     
     let statik = Math.round(parseFloat(document.getElementById('p_statik').value) || 0);
     
-    // 1000. dakika kontrolü (güvenlik - kilitli)
     if (dataPoints[index].t === 1000) return;
 
     if (field === 'level') {
@@ -494,7 +488,7 @@ function renderTable() {
     tbody.innerHTML = '';
 
     dataPoints.forEach((p, index) => {
-        let isLocked = (p.t === 1000); // 1000. dk kilitli
+        let isLocked = (p.t === 1000);
         let inputClass = isLocked 
             ? "w-full text-center bg-transparent border-none outline-none text-sm py-1 font-mono text-slate-400 cursor-not-allowed" 
             : "w-full text-center bg-transparent border-b border-transparent focus:border-blue-500 outline-none text-sm py-1 font-mono";
@@ -502,16 +496,16 @@ function renderTable() {
         let tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50 transition border-b border-slate-100";
         tr.innerHTML = `
-            <td class="p-2">
+            <td class="p-1">
                 <input type="text" value="${p.t}" readonly class="w-full text-center bg-transparent outline-none text-sm py-1 text-slate-500 cursor-default">
             </td>
-            <td class="p-2">
+            <td class="p-1">
                 <input type="number" step="1" value="${p.level}" ${isLocked ? 'readonly' : `onchange="updateRow(${index}, 'level', this.value)"`} class="${inputClass}">
             </td>
-            <td class="p-2">
+            <td class="p-1">
                 <input type="number" step="1" value="${p.dusum}" ${isLocked ? 'readonly' : `onchange="updateRow(${index}, 'dusum', this.value)"`} class="${inputClass}">
             </td>
-            <td class="p-2">
+            <td class="p-1">
                 <input type="number" step="1" value="${p.debi}" ${isLocked ? 'readonly' : `onchange="updateRow(${index}, 'debi', this.value)"`} class="${inputClass}">
             </td>
         `;
@@ -586,7 +580,7 @@ function updateChart(t1, t2, d1, d2, deltaD) {
     let maxY = 35;
     if (plotData.length > 0) {
         let dataMax = Math.max(...plotData.map(p => p.y));
-        maxY = Math.ceil(dataMax + (dataMax * 0.1)); // Üstten sıkıştırmak için padding daraltıldı
+        maxY = Math.ceil(dataMax + (dataMax * 0.05));
     }
 
     if (chartInstance) chartInstance.destroy();
@@ -598,12 +592,12 @@ function updateChart(t1, t2, d1, d2, deltaD) {
                 label: 'Düşüm Eğrisi',
                 data: plotData,
                 borderColor: '#000000',
-                borderWidth: 3, 
+                borderWidth: 3,
                 pointBackgroundColor: '#000000',
-                pointRadius: 2, // Noktalar oldukça küçültüldü
-                pointHoverRadius: 4,
+                pointRadius: 2, 
+                pointHoverRadius: 5,
                 fill: false,
-                tension: 0.4 // Çizgi kırıklıktan kurtulup yumuşatıldı
+                tension: 0.4
             }]
         },
         options: {
@@ -611,23 +605,22 @@ function updateChart(t1, t2, d1, d2, deltaD) {
             maintainAspectRatio: false,
             animation: false,
             layout: {
-                padding: 10
+                padding: { right: 20, top: 10, bottom: 5, left: 5 }
             },
             scales: {
                 x: {
                     type: 'logarithmic',
                     min: 1, max: 1000,
                     title: { display: true, text: 'Zaman (dk)', font: { size: 16, weight: 'bold' } },
-                    grid: { color: '#e2e8f0', tickColor: '#94a3b8' },
+                    grid: { color: '#e2e8f0', tickColor: '#94a3b8', display: true },
                     ticks: { 
                         font: { size: 16, weight: 'bold' },
-                        maxRotation: 0, 
-                        minRotation: 0,
+                        maxRotation: 0, minRotation: 0,
                         callback: function(value) {
                             if (value === 1 || value === 10 || value === 100 || value === 1000) {
                                 return value;
                             }
-                            return null;
+                            return ''; // Çizgiyi bırakır, metni gizler
                         }
                     }
                 },
@@ -672,7 +665,7 @@ function prepareAndPrint() {
     document.getElementById('pdf_ada').innerText = document.getElementById('p_ada_parsel').value || "-";
     document.getElementById('pdf_sahip').innerText = document.getElementById('p_sahip').value || "-";
     document.getElementById('pdf_muhendis').innerText = document.getElementById('p_muhendis').value || "-";
-    document.getElementById('pdf_imza_isim').innerText = document.getElementById('p_muhendis').value || ""; // İmza alanına ismi yaz
+    document.getElementById('pdf_imza_isim').innerText = document.getElementById('p_muhendis').value || "";
     document.getElementById('pdf_dsi').innerText = document.getElementById('p_dsi').value || "-";
     document.getElementById('pdf_tarih_val').innerText = document.getElementById('p_tarih').value || "-";
     
@@ -707,10 +700,10 @@ function prepareAndPrint() {
     
     dataPoints.forEach(p => {
         let tr = `<tr>
-            <td>${p.t}</td>
-            <td>${p.level}</td>
-            <td>${p.dusum}</td>
-            <td>${p.debi}</td>
+            <td class="py-1.5">${p.t}</td>
+            <td class="py-1.5">${p.level}</td>
+            <td class="py-1.5">${p.dusum}</td>
+            <td class="py-1.5">${p.debi}</td>
         </tr>`;
         tbody.innerHTML += tr;
     });
@@ -718,12 +711,18 @@ function prepareAndPrint() {
     const canvas = document.getElementById('drawdownChart');
     const pdfImg = document.getElementById('pdf_chart_img');
     const tempCanvas = document.createElement('canvas');
+    
+    // Kare oranında bir resim oluşturmak için genişliği yüksekliğe eşitliyoruz
     tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
+    tempCanvas.height = canvas.width; 
+    
     const tCtx = tempCanvas.getContext('2d');
-    tCtx.fillStyle = '#ffffff'; // Arka plan kesin beyaz
+    tCtx.fillStyle = '#ffffff'; 
     tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-    tCtx.drawImage(canvas, 0, 0);
+    
+    // Resmi ortalayarak çiz
+    let yOffset = (tempCanvas.height - canvas.height) / 2;
+    tCtx.drawImage(canvas, 0, yOffset);
     
     pdfImg.src = tempCanvas.toDataURL('image/png', 1.0);
     

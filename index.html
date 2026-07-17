@@ -87,7 +87,7 @@ body {
             
             <div class="flex bg-slate-800 rounded-lg p-1 gap-1">
                 <button onclick="document.getElementById('fileInput').click()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-semibold text-xs transition flex items-center gap-1.5" title="Yükle">
-                    <i class="fa-solid fa-folder-open"></i> Yükle (.geolog)
+                    <i class="fa-solid fa-folder-open"></i> Yükle
                 </button>
                 <button onclick="downloadProject()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-semibold text-xs transition flex items-center gap-1.5" title="İndir">
                     <i class="fa-solid fa-download"></i> İndir
@@ -269,8 +269,8 @@ body {
             <tr>
                 <td class="w-[15%]">Adres</td>
                 <td id="pdf_adres" class="font-normal w-[35%]">-</td>
-                <td class="w-[15%]">Sorumlu Mühendis</td>
-                <td id="pdf_muhendis" class="font-normal w-[35%]">-</td>
+                <td class="w-[20%] whitespace-nowrap">Sorumlu Mühendis</td>
+                <td id="pdf_muhendis" class="font-normal w-[30%]">-</td>
             </tr>
             <tr>
                 <td>Ada/Parsel</td>
@@ -310,10 +310,10 @@ body {
         </div>
 
         <!-- SAĞ SÜTUN: Grafik + Parametreler + Şık Formül Alanı -->
-        <div class="w-[65%] flex flex-col gap-6 h-full">
+        <div class="w-[65%] flex flex-col gap-4 h-full">
             
             <!-- Grafik (Daha Geniş Alan) -->
-            <div class="border border-black flex flex-col w-full h-[140mm] shrink-0">
+            <div class="border border-black flex flex-col w-full h-[100mm] shrink-0">
                 <div class="text-center font-bold border-b border-black py-1 text-[12px] bg-gray-50 uppercase">Düşüm - Zaman Grafiği</div>
                 <div class="flex-1 p-2 flex justify-center items-center overflow-hidden relative">
                     <img id="pdf_chart_img" src="" class="w-full h-full object-contain absolute inset-0 p-2">
@@ -367,6 +367,15 @@ body {
                 </div>
             </div>
 
+        </div>
+    </div>
+    
+    <!-- İMZA ALANI (Sol Alt) -->
+    <div class="w-full shrink-0 flex mt-2">
+        <div class="w-[35%] flex flex-col items-center text-center">
+            <div class="mt-12 border-b border-black w-2/3"></div>
+            <div class="text-[11px] font-bold mt-1 whitespace-nowrap">Sorumlu Mühendis</div>
+            <div id="pdf_imza_isim" class="text-[10px] mt-0.5"></div>
         </div>
     </div>
 </div>
@@ -680,6 +689,7 @@ function prepareAndPrint() {
     document.getElementById('pdf_muhendis').innerText = document.getElementById('p_muhendis').value || "-";
     document.getElementById('pdf_dsi').innerText = document.getElementById('p_dsi').value || "-";
     document.getElementById('pdf_tarih_val').innerText = document.getElementById('p_tarih').value || "-";
+    document.getElementById('pdf_imza_isim').innerText = document.getElementById('p_muhendis').value || "-";
     
     // Parametreler
     document.getElementById('pdf_statik').innerText = (document.getElementById('p_statik').value || "0") + " m";

@@ -27,7 +27,7 @@ body {
 
 #print-area { display: none; }
 
-/* --- A4 PDF ÇIKTISI İÇİN DÜZENLİ CSS --- */
+/* --- A4 PDF ÇIKTISI İÇİN KUSURSUZ CSS --- */
 @media print {
     @page { size: A4 portrait; margin: 0mm; }
     body {
@@ -48,7 +48,7 @@ body {
         width: 210mm;
         height: 297mm;
         margin: 0;
-        padding: 10mm;
+        padding: 10mm; /* A4 Kenar boşlukları */
         box-sizing: border-box;
         page-break-after: avoid;
         page-break-before: avoid;
@@ -58,41 +58,47 @@ body {
     }
 }
 
+/* Tablo çizgileri (Print) */
 .print-table td, .print-table th {
-    border: 1px solid #000;
-    padding: 2px 4px;
+    border: 1px solid #1e293b;
+    padding: 3px 5px;
 }
 </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
 
 <!-- Header -->
-<header class="bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow-md py-4 px-6 mb-6">
+<header class="bg-slate-900 text-white shadow-md py-4 px-6 mb-6">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
         <div class="flex items-center gap-3">
-            <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-2 rounded-lg shadow-md text-white flex items-center justify-center border border-blue-500">
+            <div class="bg-slate-800 p-2 rounded-lg shadow-md text-white flex items-center justify-center border border-slate-700">
                 <i class="fa-solid fa-chart-line text-xl px-1"></i>
             </div>
             <div>
                 <h1 class="text-xl md:text-2xl font-bold tracking-tight">GeoLog Pro</h1>
-                <p class="text-xs text-blue-200">Düşüm - Zaman Analizi</p>
+                <p class="text-xs text-slate-400">Düşüm - Zaman Analizi</p>
             </div>
         </div>
         
         <!-- Kontrol Butonları -->
         <div class="flex flex-wrap items-center gap-2">
-            <input type="file" id="fileInput" accept=".dusum,.json" class="hidden" onchange="handleFileUpload(event)">
+            <!-- .geolog Uzantısı -->
+            <input type="file" id="fileInput" accept=".geolog" class="hidden" onchange="handleFileUpload(event)">
             
-            <div class="flex bg-slate-700/50 rounded-lg p-1 gap-1">
+            <div class="flex bg-slate-800 rounded-lg p-1 gap-1">
                 <button onclick="document.getElementById('fileInput').click()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-semibold text-xs transition flex items-center gap-1.5" title="Yükle">
-                    <i class="fa-solid fa-folder-open"></i> Yükle
+                    <i class="fa-solid fa-folder-open"></i> Yükle (.geolog)
                 </button>
                 <button onclick="downloadProject()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-semibold text-xs transition flex items-center gap-1.5" title="İndir">
                     <i class="fa-solid fa-download"></i> İndir
                 </button>
             </div>
-            <div class="w-px h-6 bg-slate-600 mx-1 hidden md:block"></div>
-            <button onclick="clearAllData()" class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-2 rounded-lg font-semibold text-xs transition flex items-center gap-1.5 shadow">
+            <div class="w-px h-6 bg-slate-700 mx-1 hidden md:block"></div>
+            <!-- Şablon Butonu Geri Getirildi -->
+            <button onclick="loadSampleData()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg font-semibold text-xs transition flex items-center gap-1.5 shadow">
+                <i class="fa-solid fa-file-contract"></i> Şablon
+            </button>
+            <button onclick="clearAllData()" class="bg-rose-700 hover:bg-rose-600 text-white px-3 py-2 rounded-lg font-semibold text-xs transition flex items-center gap-1.5 shadow">
                 <i class="fa-solid fa-eraser"></i> Sıfırla
             </button>
         </div>
@@ -113,7 +119,7 @@ body {
                 </div>
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-500 mb-1">ADRES</label>
+                        <label class="block text-[10px] font-bold text-slate-500 mb-1">ADRES (Örn: Bursa / Yenişehir / Çeltikçi)</label>
                         <input type="text" id="p_adres" value="Bursa / Yenişehir / Çeltikçi" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs outline-none focus:border-slate-500">
                     </div>
                     <div>
@@ -152,15 +158,15 @@ body {
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 mb-1">STATİK SEVİYE (m)</label>
-                        <input type="number" step="0.1" id="p_statik" value="21" oninput="generateDynamicData()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold outline-none focus:border-slate-500">
+                        <input type="number" step="1" id="p_statik" value="21" oninput="generateDynamicData()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold outline-none focus:border-slate-500">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 mb-1">DİNAMİK SEVİYE (m)</label>
-                        <input type="number" step="0.1" id="p_dinamik" value="47" oninput="generateDynamicData()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold outline-none focus:border-slate-500">
+                        <input type="number" step="1" id="p_dinamik" value="47" oninput="generateDynamicData()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold outline-none focus:border-slate-500">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 mb-1">DEBİ - Q (lt/sn)</label>
-                        <input type="number" step="0.1" id="p_debi" value="8" oninput="generateDynamicData()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold outline-none focus:border-slate-500">
+                        <input type="number" step="1" id="p_debi" value="8" oninput="generateDynamicData()" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold outline-none focus:border-slate-500">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 mb-1">AKİFER KALINLIĞI (m)</label>
@@ -191,11 +197,11 @@ body {
             <!-- Sonuçlar ve Grafik -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col">
                 
-                <!-- Otomatik Hesaplama Çıktısı (Renksizleştirildi, sadece K kalın) -->
+                <!-- Otomatik Hesaplama Çıktısı (Renksiz, Sadece K Kalın) -->
                 <div class="grid grid-cols-3 gap-4 mb-4 pb-4 border-b border-slate-100">
                     <div class="bg-slate-50 rounded-lg p-3 border border-slate-200 flex flex-col justify-center items-center">
                         <span class="text-[10px] font-bold text-slate-600 uppercase">Düşüm Farkı (Δd)</span>
-                        <span class="text-xl font-normal text-slate-800 font-mono mt-1" id="ui_res_dd">0.00</span>
+                        <span class="text-xl font-normal text-slate-800 font-mono mt-1" id="ui_res_dd">0</span>
                     </div>
                     <div class="bg-slate-50 rounded-lg p-3 border border-slate-200 flex flex-col justify-center items-center">
                         <span class="text-[10px] font-bold text-slate-600 uppercase">İletim (T) m²/sn</span>
@@ -251,14 +257,14 @@ body {
     </div>
 </main>
 
-<!-- PRINT AREA (A4 PDF LAYOUT - YENİDEN DÜZENLENMİŞ YAPI) -->
+<!-- PRINT AREA (A4 PDF LAYOUT - TAM SAYFA KULLANIMI VE ŞIK TASARIM) -->
 <div id="print-area">
     
     <!-- Sayfa Başlığı -->
-    <h1 class="text-center font-bold text-xl mb-3 uppercase tracking-widest border-b-2 border-black pb-1">Sabit Seviyeli Düşüm Deneyi</h1>
+    <h1 class="text-center font-bold text-lg mb-4 uppercase tracking-widest border-b-2 border-black pb-1">SABİT SEVİYELİ DÜŞÜM DENEYİ</h1>
 
-    <!-- Künye Tablosu -->
-    <table class="w-full print-table text-[10px] mb-4 font-bold bg-white text-left">
+    <!-- 1. KÜNYE TABLOSU -->
+    <table class="w-full print-table text-[11px] mb-4 font-bold bg-white text-left">
         <tbody>
             <tr>
                 <td class="w-[15%]">Adres</td>
@@ -281,13 +287,13 @@ body {
         </tbody>
     </table>
 
-    <!-- Alt Gövde: Sol (Tablo) - Sağ (Grafik ve Hesaplar) -->
+    <!-- Alt Gövde: Tam Sayfaya Yayılacak Şekilde Yükseklikler Ayarlandı -->
     <div class="flex gap-4 flex-1 w-full overflow-hidden">
         
-        <!-- SOL SÜTUN: Veri Tablosu -->
-        <div class="w-[35%] flex flex-col overflow-hidden">
+        <!-- SOL SÜTUN: Veri Tablosu (Sayfanın tamamını kaplar) -->
+        <div class="w-[35%] flex flex-col h-full overflow-hidden">
             <div class="flex-1 overflow-hidden">
-                <table class="w-full print-table text-[9px] text-center bg-white" id="pdf_data_table">
+                <table class="w-full print-table text-[10px] text-center bg-white" id="pdf_data_table">
                     <thead>
                         <tr class="bg-gray-100">
                             <th class="py-1">Zaman (dk)</th>
@@ -297,78 +303,70 @@ body {
                         </tr>
                     </thead>
                     <tbody id="pdf_data_tbody">
-                        <!-- JS ile 1000 dk verileri buraya dolacak -->
+                        <!-- JS ile dolacak -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- SAĞ SÜTUN: Grafik + Parametreler + Sonuçlar -->
-        <div class="w-[65%] flex flex-col gap-4">
+        <!-- SAĞ SÜTUN: Grafik + Parametreler + Şık Formül Alanı -->
+        <div class="w-[65%] flex flex-col gap-6 h-full">
             
-            <!-- Grafik -->
-            <div class="border border-black flex flex-col w-full" style="height: 110mm;">
-                <div class="text-center font-bold border-b border-black py-0.5 text-[11px] bg-gray-50 uppercase">Düşüm - Zaman Eğrisi</div>
-                <div class="flex-1 p-1 flex justify-center items-center overflow-hidden relative">
-                    <img id="pdf_chart_img" src="" class="w-full h-full object-contain absolute inset-0">
+            <!-- Grafik (Daha Geniş Alan) -->
+            <div class="border border-black flex flex-col w-full h-[140mm] shrink-0">
+                <div class="text-center font-bold border-b border-black py-1 text-[12px] bg-gray-50 uppercase">Düşüm - Zaman Grafiği</div>
+                <div class="flex-1 p-2 flex justify-center items-center overflow-hidden relative">
+                    <img id="pdf_chart_img" src="" class="w-full h-full object-contain absolute inset-0 p-2">
                 </div>
             </div>
 
-            <!-- Parametreler ve Formüller -->
-            <div class="flex gap-2">
-                <!-- Parametreler -->
-                <div class="w-1/2">
-                    <table class="w-full print-table text-[10px] font-bold bg-white text-left">
-                        <tbody>
-                            <tr>
-                                <td class="w-[60%]">Statik Seviye</td>
-                                <td id="pdf_statik" class="font-normal text-center">-</td>
-                            </tr>
-                            <tr>
-                                <td>Dinamik Seviye</td>
-                                <td id="pdf_dinamik" class="font-normal text-center">-</td>
-                            </tr>
-                            <tr>
-                                <td>Akifer Kalınlığı</td>
-                                <td id="pdf_kalinlik" class="font-normal text-center">-</td>
-                            </tr>
-                            <tr>
-                                <td>Test Debisi</td>
-                                <td id="pdf_debi" class="font-normal text-center">-</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Parametreler Tablosu -->
+            <table class="w-full print-table text-[11px] font-bold bg-white text-left">
+                <tbody>
+                    <tr>
+                        <td class="w-[50%]">Statik Seviye</td>
+                        <td id="pdf_statik" class="font-normal text-center">-</td>
+                        <td class="w-[25%] bg-gray-50">Akifer Kalınlığı</td>
+                        <td id="pdf_kalinlik" class="font-normal text-center">-</td>
+                    </tr>
+                    <tr>
+                        <td>Dinamik Seviye</td>
+                        <td id="pdf_dinamik" class="font-normal text-center">-</td>
+                        <td class="bg-gray-50">Test Debisi</td>
+                        <td id="pdf_debi" class="font-normal text-center">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Şık ve Anlaşılır Formül Alanı (Tablo Değil) -->
+            <div class="flex-1 border border-black p-5 flex flex-col justify-center gap-3 bg-gray-50/50">
+                <div class="text-center font-bold text-xs uppercase tracking-widest border-b border-gray-300 pb-2 mb-2">Hidrolik Parametre Hesaplamaları</div>
+                
+                <div class="text-[11px] leading-relaxed">
+                    <span class="inline-block w-40 font-bold text-gray-700">Düşüm Farkı (Δd) :</span>
+                    <span class="font-mono">Δd = <span id="pdf_eq_d2"></span> - <span id="pdf_eq_d1"></span> = <span id="pdf_eq_dd"></span> m</span>
+                </div>
+                
+                <div class="text-[11px] leading-relaxed mt-2">
+                    <span class="inline-block w-40 font-bold text-gray-700">İletilebilirlik (T) :</span>
+                    <span class="font-mono">T = (0.183 &times; Q) / Δd</span>
+                </div>
+                <div class="text-[11px] leading-relaxed pl-40">
+                    <span class="font-mono">T = (0.183 &times; <span id="pdf_eq_Q"></span>) / <span id="pdf_eq_dd_div"></span></span><br>
+                    <span class="font-mono">T = <span id="pdf_res_T_msn"></span> m²/sn &nbsp;&nbsp;&nbsp;(&nbsp;<span id="pdf_res_T_mgun"></span> m²/gün&nbsp;)</span>
                 </div>
 
-                <!-- Formüller (Renksizleştirilmiş, Sadece K Kalın) -->
-                <div class="w-1/2 border border-black p-3 text-[10px] font-mono leading-[2.0] bg-white text-black">
-                    <div>
-                        Δd = <span id="pdf_eq_d2"></span> - <span id="pdf_eq_d1"></span> = <span id="pdf_eq_dd"></span> m
-                    </div>
-                    <div class="mt-2">
-                        T = (0,183 &times; Q) / Δd
-                    </div>
-                    <div>
-                        T = (0,183 &times; <span id="pdf_eq_Q"></span>) / <span id="pdf_eq_dd_div"></span>
-                    </div>
-                    <div>
-                        T = <span id="pdf_res_T_msn"></span> m²/sn
-                    </div>
-                    <div>
-                        T = <span id="pdf_res_T_mgun"></span> m²/gün
-                    </div>
-
-                    <div class="mt-2">
-                        K = T / e
-                    </div>
-                    <div>
-                        K = <span id="pdf_eq_T"></span> / <span id="pdf_eq_e"></span>
-                    </div>
-                    <div class="font-bold">
-                        K = <span id="pdf_res_K"></span> m/sn
-                    </div>
+                <div class="text-[11px] leading-relaxed mt-4 pt-4 border-t border-gray-300">
+                    <span class="inline-block w-40 font-bold text-gray-700">Hidrolik İletkenlik (K) :</span>
+                    <span class="font-mono">K = T / e</span>
+                </div>
+                <div class="text-[11px] leading-relaxed pl-40">
+                    <span class="font-mono">K = <span id="pdf_eq_T"></span> / <span id="pdf_eq_e"></span></span><br>
+                    <!-- K SADECE BURADA KALIN YAZILIR -->
+                    <span class="font-mono font-bold text-[13px] tracking-wide mt-1 inline-block">K = <span id="pdf_res_K"></span> m/sn</span>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -383,7 +381,7 @@ body {
 let chartInstance = null;
 let dataPoints = [];
 
-// Sabit Zaman Noktaları (1000 dk'ya kadar)
+// Sabit Zaman Noktaları (1000 dk'ya kadar, tam sayfa pdf için 28 satır)
 const timeSteps = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
 const inputIdsToSave = [
@@ -409,31 +407,51 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-// Ana Veri Üretici (Statik, Dinamik ve Debi girildiğinde çalışır)
+// Ana Veri Üretici: Statik, Dinamik ve Debi girildiğinde TAMSAYI mantığıyla çalışır.
 function generateDynamicData() {
     let statik = parseFloat(document.getElementById('p_statik').value);
     let dinamik = parseFloat(document.getElementById('p_dinamik').value);
-    let debi = parseFloat(document.getElementById('p_debi').value);
+    let targetDebi = parseFloat(document.getElementById('p_debi').value);
 
     // Eksik veri varsa bekleyelim
-    if (isNaN(statik) || isNaN(dinamik) || isNaN(debi)) return;
+    if (isNaN(statik) || isNaN(dinamik) || isNaN(targetDebi)) return;
 
-    let maxDrawdown = dinamik - statik;
-    if (maxDrawdown < 0) maxDrawdown = 0; // Hatalı girişte eksiye düşmemesi için
+    let maxDrawdown = Math.max(0, dinamik - statik);
 
     dataPoints = timeSteps.map(t => {
-        // Logaritmik eğri hesaplaması (Mantıklı Düşüm Modeli)
-        let dusum = maxDrawdown * (Math.log(t + 1) / Math.log(1001));
-        let level = statik + dusum;
+        let dusum = 0;
         
-        // Kural: 700'e kadar debi %30 fazla, 700-1000 arası normal debi.
-        let isT1000 = (t === 1000);
-        let currentDebi = (t < 700) ? (debi * 1.3) : debi;
+        // Kural: 1. dakikada düşüm YOK. 
+        if (t > 1) {
+            dusum = maxDrawdown * (Math.log(t) / Math.log(1000));
+        }
+        
+        // Kural: Ölçülen seviye tamsayı olmalı
+        let level = Math.round(statik + dusum);
+        // Tamsayıya yuvarlanan seviye üzerinden net düşüm
+        let actualDusum = level - statik;
+        
+        let currentDebi = targetDebi;
+        
+        // Kural: Debi başlangıçta yüksek başlar, düşüm arttıkça azalıp 700. dk'da hedefe ulaşır.
+        if (t < 700) {
+            let startDebi = targetDebi * 1.3;
+            let diff = startDebi - targetDebi;
+            // Zamanla azalan logaritmik formül
+            if(t === 1) {
+                currentDebi = Math.round(startDebi);
+            } else {
+                let decrement = diff * (Math.log(t) / Math.log(700));
+                currentDebi = Math.round(startDebi - decrement);
+            }
+        } else {
+            currentDebi = Math.round(targetDebi);
+        }
 
         return {
             t: t,
             level: level,
-            dusum: dusum,
+            dusum: actualDusum,
             debi: currentDebi
         };
     });
@@ -459,22 +477,23 @@ function renderTable() {
         // Zaman (Düzenlenemez, Düz Metin)
         tr.innerHTML += `<td class="p-2 text-center font-mono font-semibold text-slate-600 text-xs">${p.t}</td>`;
         
-        // Ölçülen Seviye
-        tr.innerHTML += `<td class="p-1"><input type="number" step="0.01" value="${p.level.toFixed(2)}" onchange="updateRow(${index}, 'level', this.value)" class="w-full text-center border border-transparent rounded outline-none text-xs py-1.5 font-mono ${bgClass}" ${readonlyAttr}></td>`;
+        // Ölçülen Seviye (TAMSAYI: step="1")
+        tr.innerHTML += `<td class="p-1"><input type="number" step="1" value="${Math.round(p.level)}" onchange="updateRow(${index}, 'level', this.value)" class="w-full text-center border border-transparent rounded outline-none text-xs py-1.5 font-mono ${bgClass}" ${readonlyAttr}></td>`;
         
-        // Düşüm
-        let d = (p.level - statik).toFixed(2);
-        tr.innerHTML += `<td class="p-1"><input type="number" step="0.01" value="${d}" onchange="updateRow(${index}, 'dusum', this.value)" class="w-full text-center border border-transparent rounded outline-none text-xs py-1.5 font-mono ${bgClass}" ${readonlyAttr}></td>`;
+        // Düşüm (TAMSAYI: step="1")
+        let d = Math.round(p.level - statik);
+        tr.innerHTML += `<td class="p-1"><input type="number" step="1" value="${d}" onchange="updateRow(${index}, 'dusum', this.value)" class="w-full text-center border border-transparent rounded outline-none text-xs py-1.5 font-mono ${bgClass}" ${readonlyAttr}></td>`;
 
-        // Debi
-        tr.innerHTML += `<td class="p-1"><input type="number" step="0.1" value="${p.debi.toFixed(1)}" onchange="updateRow(${index}, 'debi', this.value)" class="w-full text-center border border-transparent rounded outline-none text-xs py-1.5 font-mono ${bgClass}" ${readonlyAttr}></td>`;
+        // Debi (TAMSAYI: step="1")
+        tr.innerHTML += `<td class="p-1"><input type="number" step="1" value="${Math.round(p.debi)}" onchange="updateRow(${index}, 'debi', this.value)" class="w-full text-center border border-transparent rounded outline-none text-xs py-1.5 font-mono ${bgClass}" ${readonlyAttr}></td>`;
 
         tbody.appendChild(tr);
     });
 }
 
 function updateRow(index, field, value) {
-    let val = parseFloat(value);
+    // Tamsayı girdisine zorla
+    let val = Math.round(parseFloat(value));
     if(isNaN(val)) return;
     
     // 1000. dakika değiştirilemez güvenlik kontrolü
@@ -522,7 +541,7 @@ function getDrawdownAt(t) {
     let logT = Math.log10(t);
     
     let d = d1 + (d2 - d1) * ((logT - logT1) / (logT2 - logT1));
-    return Math.max(0, d);
+    return Math.max(0, Math.round(d));
 }
 
 function formatScientificHTML(num) {
@@ -554,7 +573,7 @@ function calculateAll() {
         K_msn = T_msn / e;
     }
     
-    document.getElementById('ui_res_dd').innerText = deltaD > 0 ? deltaD.toFixed(2) : "0.00";
+    document.getElementById('ui_res_dd').innerText = deltaD > 0 ? Math.round(deltaD) : "0";
     document.getElementById('ui_res_T').innerHTML = formatScientificHTML(T_msn);
     document.getElementById('ui_res_K').innerHTML = formatScientificHTML(K_msn);
     
@@ -586,7 +605,7 @@ function updateChart(t1, t2, d1, d2, deltaD) {
         type: 'line',
         data: {
             datasets: [{
-                label: 'Düşüm Eğrisi',
+                label: 'Düşüm Grafiği',
                 data: plotData,
                 borderColor: '#1e293b',
                 borderWidth: 2,
@@ -607,7 +626,11 @@ function updateChart(t1, t2, d1, d2, deltaD) {
                     min: 1,
                     max: 1000,
                     title: { display: true, text: 'Zaman (dk)', font: { weight: 'bold' } },
-                    grid: { color: '#e2e8f0', tickColor: '#94a3b8' }
+                    grid: { color: '#e2e8f0', tickColor: '#94a3b8' },
+                    ticks: {
+                        maxRotation: 90, 
+                        minRotation: 90  // Kural: Eksen yazıları dikey dursun üst üste binmesin
+                    }
                 },
                 y: {
                     type: 'linear',
@@ -629,7 +652,7 @@ function updateChart(t1, t2, d1, d2, deltaD) {
                             xValue: t2,
                             yValue: d1 + (deltaD/2),
                             xAdjust: 45, 
-                            content: `ΔD = ${deltaD.toFixed(2)}`,
+                            content: `ΔD = ${Math.round(deltaD)}`,
                             backgroundColor: 'white',
                             borderWidth: 1, borderColor: '#cbd5e1',
                             color: '#1e293b',
@@ -670,13 +693,13 @@ function prepareAndPrint() {
     let t2 = parseFloat(document.getElementById('p_t2').value) || 100;
     let d1 = getDrawdownAt(t1);
     let d2 = getDrawdownAt(t2);
-    let deltaD = d2 - d1;
+    let deltaD = Math.round(d2 - d1);
     
-    document.getElementById('pdf_eq_d2').innerText = d2.toFixed(2);
-    document.getElementById('pdf_eq_d1').innerText = d1.toFixed(2);
-    document.getElementById('pdf_eq_dd').innerText = deltaD.toFixed(2);
-    document.getElementById('pdf_eq_dd_div').innerText = deltaD.toFixed(2);
-    document.getElementById('pdf_eq_Q').innerText = Q.toFixed(1);
+    document.getElementById('pdf_eq_d2').innerText = Math.round(d2);
+    document.getElementById('pdf_eq_d1').innerText = Math.round(d1);
+    document.getElementById('pdf_eq_dd').innerText = deltaD;
+    document.getElementById('pdf_eq_dd_div').innerText = deltaD;
+    document.getElementById('pdf_eq_Q').innerText = Math.round(Q);
     
     document.getElementById('pdf_res_T_msn').innerHTML = document.getElementById('ui_res_T').innerHTML;
     
@@ -687,18 +710,18 @@ function prepareAndPrint() {
     document.getElementById('pdf_eq_e').innerText = document.getElementById('p_kalinlik').value || "1";
     document.getElementById('pdf_res_K').innerHTML = document.getElementById('ui_res_K').innerHTML;
     
-    // Veri Tablosu Çıktısı (Tam olarak üretilen logaritmik adımların tamamı)
+    // Veri Tablosu Çıktısı 
     const tbody = document.getElementById('pdf_data_tbody');
     tbody.innerHTML = '';
     let statik = parseFloat(document.getElementById('p_statik').value) || 0;
     
     dataPoints.forEach(p => {
-        let d = (p.level - statik).toFixed(2);
+        let d = Math.round(p.level - statik);
         let tr = `<tr>
             <td class="py-0.5 border-b border-gray-200">${p.t}</td>
-            <td class="py-0.5 border-b border-gray-200">${p.level.toFixed(2)}</td>
+            <td class="py-0.5 border-b border-gray-200">${Math.round(p.level)}</td>
             <td class="py-0.5 border-b border-gray-200">${d}</td>
-            <td class="py-0.5 border-b border-gray-200">${p.debi.toFixed(1)}</td>
+            <td class="py-0.5 border-b border-gray-200">${Math.round(p.debi)}</td>
         </tr>`;
         tbody.innerHTML += tr;
     });
@@ -722,6 +745,23 @@ function prepareAndPrint() {
         window.print();
         document.title = originalTitle;
     }, 500);
+}
+
+// Şablon Veri Yükleme (İstenilen formatta)
+function loadSampleData() {
+    document.getElementById('p_adres').value = "Bursa / Yenişehir / Çeltikçi";
+    document.getElementById('p_ada_parsel').value = "102 Ada / 13 Parsel";
+    document.getElementById('p_sahip').value = "Örnek Sahip";
+    document.getElementById('p_muhendis').value = "Örnek Mühendis";
+    document.getElementById('p_dsi').value = "BRS.00.000";
+    
+    document.getElementById('p_statik').value = "21";
+    document.getElementById('p_dinamik').value = "47";
+    document.getElementById('p_debi').value = "8";
+    document.getElementById('p_kalinlik').value = "120";
+    
+    generateDynamicData();
+    showToast("Şablon verisi tamsayı kurallarına göre yüklendi.", "success");
 }
 
 function clearAllData() {
@@ -756,8 +796,29 @@ function downloadProject() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    let name = document.getElementById('p_sahip').value || "Dusum_Projesi";
-    a.download = name.replace(/\s+/g, '_') + ".dusum";
+    
+    // Kural: ilce_mahalle_ada_parsel_dusum.geolog isimlendirmesi
+    let adresRaw = document.getElementById('p_adres').value || "";
+    let adaParselRaw = document.getElementById('p_ada_parsel').value || "";
+    
+    // Adresi / ile parçalayıp son 2 elemanı (ilçe ve mahalle) alma
+    let adresParts = adresRaw.split('/').map(s => s.trim().replace(/\s+/g, '_').toLowerCase());
+    let ilceMahalle = "";
+    if (adresParts.length >= 2) {
+        ilceMahalle = adresParts.slice(-2).join('_');
+    } else {
+        ilceMahalle = adresParts.join('_') || "bilinmeyen_yer";
+    }
+    
+    let adaParsel = adaParselRaw.replace(/\//g, '_').replace(/\s+/g, '_').toLowerCase() || "bilinmeyen_parsel";
+    
+    // Türkçe karakterleri dosya isminde güvenli hale getirme
+    const trMap = {'ç':'c','ğ':'g','ı':'i','ö':'o','ş':'s','ü':'u'};
+    let rawName = `${ilceMahalle}_${adaParsel}_dusum`;
+    let safeName = rawName.replace(/[çğıöşü]/g, match => trMap[match]).replace(/[^a-z0-9_]/g, '');
+    
+    a.download = safeName + ".geolog";
+    
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -785,16 +846,16 @@ function handleFileUpload(event) {
             } else {
                 generateDynamicData();
             }
-            showToast("Proje yüklendi.", "success");
+            showToast("Proje başarıyla yüklendi.", "success");
         } catch (err) {
-            showToast("Bozuk proje dosyası!", "error");
+            showToast("Bozuk veya uyumsuz proje dosyası!", "error");
         }
         event.target.value = ""; 
     };
     reader.readAsText(file);
 }
 
-// Sistem ilk açılışta 1000 dakikaya kadar veriyi otomatik doldurur.
+// Sistem ilk açılışta veriyi otomatik doldurur.
 window.onload = function() {
     generateDynamicData();
 }

@@ -118,11 +118,17 @@ body {
                     <h2 class="text-base font-bold text-slate-800">Proje Künyesi</h2>
                 </div>
                 <div class="space-y-3">
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-500 mb-1">İL / İLÇE / MAHALLE</label>
-                        <div class="grid grid-cols-3 gap-2">
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-500 mb-1">İL</label>
                             <input type="text" id="p_il" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm outline-none focus:border-blue-500" placeholder="İl">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-500 mb-1">İLÇE</label>
                             <input type="text" id="p_ilce" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm outline-none focus:border-blue-500" placeholder="İlçe">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-500 mb-1">MAHALLE</label>
                             <input type="text" id="p_mahalle" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-sm outline-none focus:border-blue-500" placeholder="Mahalle">
                         </div>
                     </div>
@@ -288,10 +294,11 @@ body {
         </tbody>
     </table>
 
-    <div class="flex gap-4 flex-1 w-full overflow-hidden">
+    <!-- Alt Gövde: Esneklik (flex-1) kaldırılarak kutuların kendi boyutu kadar küçülmesi sağlandı -->
+    <div class="flex gap-4 w-full">
         
         <!-- SOL SÜTUN (Tablo ve İmza) -->
-        <div class="w-[28%] flex flex-col h-full gap-0 mt-0">
+        <div class="w-[28%] flex flex-col gap-2">
             <table class="w-full print-table text-[10px] text-center bg-white" id="pdf_data_table">
                 <thead>
                     <tr class="bg-gray-100">
@@ -305,14 +312,15 @@ body {
                 </tbody>
             </table>
             
-            <div class="border border-black p-3 flex flex-col items-center justify-end h-[25mm] shrink-0 mt-auto w-full">
+            <!-- mt-auto ile imza kutusu daima en alta itilir (sağdaki kutu ile aynı hizada kalır) -->
+            <div class="border border-black p-3 flex flex-col items-center justify-end h-[25mm] shrink-0 w-full mt-auto">
                 <div class="text-[11px] font-bold whitespace-nowrap">Sorumlu Mühendis</div>
                 <div id="pdf_imza_isim" class="text-[11px] mt-1 h-3"></div>
             </div>
         </div>
 
         <!-- SAĞ SÜTUN (Grafik, Parametreler ve Hesaplamalar) -->
-        <div class="w-[72%] flex flex-col gap-3 h-full mt-0">
+        <div class="w-[72%] flex flex-col gap-3">
             
             <div class="border border-black flex flex-col w-full h-[105mm] shrink-0">
                 <div class="text-center font-bold border-b border-black py-1 text-[12px] uppercase bg-gray-50">Düşüm - Zaman Grafiği</div>
@@ -321,34 +329,35 @@ body {
                 </div>
             </div>
 
-            <!-- BİRLEŞTİRİLMİŞ PARAMETRE VE HESAPLAMA KUTUSU (Bugsız Print Düzeni) -->
-            <div class="flex-1 border border-black flex flex-col mb-0 bg-white">
+            <!-- BİRLEŞTİRİLMİŞ PARAMETRE VE HESAPLAMA KUTUSU -->
+            <div class="border border-black flex flex-col bg-white flex-1" style="border: 1px solid #000; box-sizing: border-box;">
                 
-                <!-- Üst: Parametre Tablosu -->
                 <table class="w-full text-[11px] font-bold bg-white text-left" style="border-collapse: collapse;">
                     <tbody>
                         <tr>
-                            <td class="w-[25%] p-1.5 bg-gray-50 border-b border-r border-black pl-2">Statik Seviye</td>
-                            <td id="pdf_statik" class="w-[25%] p-1.5 font-normal border-b border-r border-black pl-2">-</td>
-                            <td class="w-[25%] p-1.5 bg-gray-50 border-b border-r border-black pl-2">Akifer Kalınlığı (e)</td>
-                            <td id="pdf_kalinlik" class="w-[25%] p-1.5 font-normal border-b border-black pl-2">-</td>
+                            <td class="w-[25%] p-1.5 pl-2">Statik Seviye</td>
+                            <td id="pdf_statik" class="w-[25%] p-1.5 font-normal">-</td>
+                            <td class="w-[25%] p-1.5 pl-2">Akifer Kalınlığı (e)</td>
+                            <td id="pdf_kalinlik" class="w-[25%] p-1.5 font-normal">-</td>
                         </tr>
                         <tr>
-                            <td class="p-1.5 bg-gray-50 border-b border-r border-black pl-2">Dinamik Seviye</td>
-                            <td id="pdf_dinamik" class="p-1.5 font-normal border-b border-r border-black pl-2">-</td>
-                            <td class="p-1.5 bg-gray-50 border-b border-r border-black pl-2">Debi</td>
-                            <td id="pdf_debi" class="p-1.5 font-normal border-b border-black pl-2">-</td>
+                            <!-- Alt çizgi çekilerek parametreler hesaplamalardan ayrıldı (Kırmızı Oklu Talep) -->
+                            <td class="p-1.5 pl-2 border-b border-black">Dinamik Seviye</td>
+                            <td id="pdf_dinamik" class="p-1.5 font-normal border-b border-black">-</td>
+                            <td class="p-1.5 pl-2 border-b border-black">Debi</td>
+                            <td id="pdf_debi" class="p-1.5 font-normal border-b border-black">-</td>
+                        </tr>
+                        <tr>
+                            <!-- Hesaplama Başlığı (pt-4 ile üstten boşluk verildi) -->
+                            <td colspan="4" class="text-center font-bold text-[11px] uppercase tracking-widest pt-4 pb-2 border-b border-gray-300 bg-gray-50">
+                                Hidrolik Parametre Hesaplamaları
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-
-                <!-- Orta: Başlık -->
-                <div class="text-center font-bold text-[11px] uppercase tracking-widest border-b border-black bg-gray-100 py-1.5">
-                    Hidrolik Parametre Hesaplamaları
-                </div>
                 
-                <!-- Alt: Sola Dayalı Formüller -->
-                <div class="flex-1 p-3 flex flex-col justify-center gap-2 bg-white">
+                <!-- Sola Dayalı Formüller (pb-4 ile alttan boşluk verildi) -->
+                <div class="p-3 pb-4 flex flex-col justify-center gap-2 bg-white">
                     <div class="text-[11px] leading-relaxed text-black">
                         <span class="inline-block w-36 font-bold pl-2">Düşüm Farkı (Δd) :</span>
                         <span class="font-mono">Δd = <span id="pdf_eq_d2"></span> - <span id="pdf_eq_d1"></span> = <span id="pdf_eq_dd"></span> m</span>

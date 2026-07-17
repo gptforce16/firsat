@@ -310,7 +310,7 @@ body {
             </table>
             
             <!-- İMZA ALANI (Tablo altına taşındı, mt-auto ile hesaplama tablosuyla aynı hizaya getirildi) -->
-            <div class="border border-black p-3 flex flex-col items-center justify-end h-[22mm] w-full mt-auto mb-0">
+            <div class="border border-black p-3 flex flex-col items-center justify-end h-[25mm] w-full mt-auto mb-0 bg-white">
                 <div class="text-[11px] font-bold whitespace-nowrap mb-1">Sorumlu Mühendis</div>
                 <div id="pdf_imza_isim" class="text-[11px] font-normal"></div>
             </div>
@@ -347,32 +347,32 @@ body {
             </table>
 
             <!-- Şık ve Anlaşılır Formül Alanı (mt-auto ile en alta itilerek imza ile hizalandı) -->
-            <div class="border border-black p-4 flex flex-col justify-center gap-2 mb-0 mt-auto bg-white">
+            <div class="border border-black p-5 flex flex-col justify-center gap-2 mb-0 mt-auto bg-white w-full">
                 <!-- Başlık Tablo İçine Alındı -->
                 <div class="text-center font-bold text-xs uppercase tracking-widest border-b border-gray-300 pb-2 mb-2">Hidrolik Parametre Hesaplamaları</div>
                 
-                <div class="text-[11px] leading-relaxed text-black text-center flex justify-center items-center gap-2">
-                    <span class="font-bold">Düşüm Farkı (Δd) :</span>
+                <div class="text-[11px] leading-relaxed text-black">
+                    <span class="inline-block w-40 font-bold">Düşüm Farkı (Δd) :</span>
                     <span class="font-mono">Δd = <span id="pdf_eq_d2"></span> - <span id="pdf_eq_d1"></span> = <span id="pdf_eq_dd"></span> m</span>
                 </div>
                 
-                <div class="text-[11px] leading-relaxed mt-2 text-black text-center flex flex-col items-center">
-                    <div class="flex gap-2">
-                        <span class="font-bold">İletilebilirlik (T) :</span>
-                        <span class="font-mono">T = (0.183 &times; Q) / Δd</span>
-                    </div>
-                    <span class="font-mono mt-1">T = (0.183 &times; <span id="pdf_eq_Q"></span>) / <span id="pdf_eq_dd_div"></span></span>
-                    <span class="font-mono mt-1">T = <span id="pdf_res_T_msn"></span> m²/sn &nbsp;&nbsp;&nbsp;(&nbsp;<span id="pdf_res_T_mgun"></span> m²/gün&nbsp;)</span>
+                <div class="text-[11px] leading-relaxed mt-1 text-black">
+                    <span class="inline-block w-40 font-bold">İletilebilirlik (T) :</span>
+                    <span class="font-mono">T = (0.183 &times; Q) / Δd</span>
+                </div>
+                <div class="text-[11px] leading-relaxed pl-40 text-black">
+                    <span class="font-mono">T = (0.183 &times; <span id="pdf_eq_Q"></span>) / <span id="pdf_eq_dd_div"></span></span><br>
+                    <span class="font-mono">T = <span id="pdf_res_T_msn"></span> m²/sn &nbsp;&nbsp;&nbsp;(&nbsp;<span id="pdf_res_T_mgun"></span> m²/gün&nbsp;)</span>
                 </div>
 
-                <div class="text-[11px] leading-relaxed mt-3 pt-3 border-t border-gray-300 text-black text-center flex flex-col items-center">
-                    <div class="flex gap-2">
-                        <span class="font-bold">Hidrolik İletkenlik (K) :</span>
-                        <span class="font-mono">K = T / e</span>
-                    </div>
-                    <span class="font-mono mt-1">K = <span id="pdf_eq_T"></span> / <span id="pdf_eq_e"></span></span>
+                <div class="text-[11px] leading-relaxed mt-3 pt-3 border-t border-gray-300 text-black">
+                    <span class="inline-block w-40 font-bold">Hidrolik İletkenlik (K) :</span>
+                    <span class="font-mono">K = T / e</span>
+                </div>
+                <div class="text-[11px] leading-relaxed pl-40 text-black">
+                    <span class="font-mono">K = <span id="pdf_eq_T"></span> / <span id="pdf_eq_e"></span></span><br>
                     <!-- K SADECE BURADA KALIN YAZILIR -->
-                    <span class="font-mono font-bold text-[13px] tracking-wide mt-2 inline-block">K = <span id="pdf_res_K"></span> m/sn</span>
+                    <span class="font-mono font-bold text-[13px] tracking-wide mt-1 inline-block">K = <span id="pdf_res_K"></span> m/sn</span>
                 </div>
             </div>
 
